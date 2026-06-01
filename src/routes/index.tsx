@@ -94,7 +94,7 @@ function Index() {
           {tab === "academy" && <AcademyView />}
           {tab === "jobs" && <JobsView />}
           {tab === "news" && <NewsView />}
-          {tab === "exam" && <PlaceholderView title="认证考试" desc="跨境电商职业能力等级认证报名通道即将开放" />}
+          {tab === "exam" && <ExamView />}
           {tab === "about" && <PlaceholderView title="关于平台" desc="武汉市跨境电子商务协会 · 官方授权培训与就业服务平台" />}
         </div>
       </main>
