@@ -4,7 +4,8 @@ import {
   Search, Phone, MessageCircle, QrCode, Bell, X, ChevronRight, Flame,
   Clock, User, MapPin, Briefcase, GraduationCap, Calendar, ArrowRight,
   Home, BookOpen, Award, Newspaper, Info, Building2, Sparkles, PlayCircle,
-  CheckCircle2, Star, TrendingUp,
+  CheckCircle2, Star, TrendingUp, ShieldCheck, FileText, Users, Trophy,
+  Download, BadgeCheck, Target, Layers,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
