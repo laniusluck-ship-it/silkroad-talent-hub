@@ -613,6 +613,301 @@ function NewsView() {
   );
 }
 
+function ExamView() {
+  const certs = [
+    {
+      name: "跨境电商运营专员（初级）",
+      code: "CBEC-101",
+      level: "L1 · 入门",
+      levelColor: "from-sky-400 to-sky-600",
+      hot: true,
+      price: 380,
+      origin: 580,
+      duration: "120 分钟",
+      questions: "客观题 80 + 实操 2",
+      passRate: 86,
+      enrolled: 12480,
+      next: "2025-07-12",
+      tags: ["亚马逊", "速卖通", "Shopee"],
+      desc: "面向零基础学员，覆盖平台规则、选品、Listing 优化与基础广告投放，省内人社部门联合认证。",
+    },
+    {
+      name: "TikTok Shop 跨境直播运营师",
+      code: "TTS-202",
+      level: "L2 · 进阶",
+      levelColor: "from-orange-400 to-rose-500",
+      hot: true,
+      price: 880,
+      origin: 1280,
+      duration: "150 分钟",
+      questions: "客观题 60 + 直播实操",
+      passRate: 72,
+      enrolled: 6320,
+      next: "2025-07-20",
+      tags: ["东南亚", "短视频", "达人带货"],
+      desc: "字节官方课程认证，含直播脚本、千川投放与跨境履约全流程，结业即可对接湖北 TikTok 服务商。",
+    },
+    {
+      name: "RCEP 国际贸易合规师",
+      code: "RCEP-301",
+      level: "L3 · 高级",
+      levelColor: "from-indigo-500 to-purple-600",
+      hot: false,
+      price: 1680,
+      origin: 2280,
+      duration: "180 分钟",
+      questions: "案例分析 + 实务申报",
+      passRate: 58,
+      enrolled: 2150,
+      next: "2025-08-03",
+      tags: ["原产地证", "关税", "RCEP"],
+      desc: "联合武汉海关与省商务厅推出，聚焦 RCEP 原产地规则、关税减让与跨境结算合规要点。",
+    },
+    {
+      name: "海外仓供应链管理师",
+      code: "OWM-302",
+      level: "L3 · 高级",
+      levelColor: "from-emerald-500 to-teal-600",
+      hot: false,
+      price: 1480,
+      origin: 1980,
+      duration: "150 分钟",
+      questions: "客观题 + 沙盘推演",
+      passRate: 64,
+      enrolled: 1820,
+      next: "2025-08-15",
+      tags: ["FBA", "海外仓", "尾程派送"],
+      desc: "围绕欧美/东南亚海外仓选址、WMS 系统操作与尾程时效优化，培养跨境履约核心岗位人才。",
+    },
+  ];
+
+  const steps = [
+    { icon: User, t: "在线报名", d: "提交资料 · 资格预审" },
+    { icon: BookOpen, t: "备考培训", d: "120+ 课时直播 + 题库" },
+    { icon: FileText, t: "机位考试", d: "全省 23 个考点机考" },
+    { icon: BadgeCheck, t: "颁发证书", d: "电子证书 + 钢印纸证" },
+  ];
+
+  const stats = [
+    { n: "32,860+", l: "累计认证学员", icon: Users, c: "text-blue-600 bg-blue-50" },
+    { n: "78.6%", l: "平均通过率", icon: Trophy, c: "text-orange-600 bg-orange-50" },
+    { n: "23", l: "全省机考考点", icon: MapPin, c: "text-emerald-600 bg-emerald-50" },
+    { n: "186", l: "合作用人企业", icon: Building2, c: "text-purple-600 bg-purple-50" },
+  ];
+
+  const faqs = [
+    { q: "证书在全国范围内是否通用？", a: "本认证由湖北省商务厅指导、武汉市跨境电子商务协会颁发，全国跨境电商行业互认，可在「人社部国家职业资格证书查询系统」官网验证。" },
+    { q: "考试形式与补考政策？", a: "全程线上机考（含人脸识别 + 双机位监考），未通过可在 6 个月内免费补考一次，补考仅需在系统内重新预约考期。" },
+    { q: "是否提供企业团报与发票？", a: "5 人以上团报享 8.5 折，20 人以上享 7 折并支持上门定制培训，开具正规增值税专用发票。" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Hero */}
+      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white p-8 md:p-10 shadow-xl shadow-blue-500/20">
+        <div className="absolute -right-16 -top-16 w-72 h-72 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute right-24 bottom-0 w-40 h-40 rounded-full bg-orange-400/30 blur-2xl" />
+        <div className="relative grid md:grid-cols-12 gap-6 items-center">
+          <div className="md:col-span-8">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-xs font-medium">
+              <ShieldCheck className="w-3.5 h-3.5" /> 湖北省商务厅 · 武汉海关 联合指导
+            </div>
+            <h1 className="mt-4 text-3xl md:text-4xl font-bold leading-tight">
+              跨境电商职业能力<span className="text-orange-300">等级认证</span>
+            </h1>
+            <p className="mt-3 text-blue-50/90 max-w-2xl">
+              覆盖运营、直播、合规、供应链四大方向，权威认证 · 全国通用 · 名企直推。2025 年度第三批考试报名通道已开启。
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button className="px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 transition font-semibold text-sm shadow-lg shadow-orange-500/30 flex items-center gap-2">
+                立即报名 <ArrowRight className="w-4 h-4" />
+              </button>
+              <button className="px-5 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 backdrop-blur transition font-medium text-sm flex items-center gap-2">
+                <Download className="w-4 h-4" /> 下载考试大纲
+              </button>
+            </div>
+          </div>
+          <div className="md:col-span-4 grid grid-cols-2 gap-3">
+            {stats.slice(0, 4).map((s) => (
+              <div key={s.l} className="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/15">
+                <s.icon className="w-4 h-4 text-orange-300" />
+                <div className="mt-1.5 text-xl font-bold">{s.n}</div>
+                <div className="text-[11px] text-blue-100/80">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Steps */}
+      <section className="bg-white rounded-2xl p-6 md:p-8 border border-blue-50 shadow-sm">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <Target className="w-5 h-5 text-blue-600" /> 四步获取权威认证
+            </h2>
+            <p className="text-sm text-slate-500 mt-1">从报名到拿证，全流程线上托管</p>
+          </div>
+          <button className="hidden md:flex items-center gap-1 text-sm text-blue-600 hover:gap-2 transition-all font-medium">
+            查看完整流程 <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {steps.map((s, i) => (
+            <div key={s.t} className="relative group">
+              <div className="rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50/60 to-white p-5 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-100 transition-all">
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 grid place-items-center text-white shadow-md shadow-blue-500/30">
+                    <s.icon className="w-5 h-5" />
+                  </div>
+                  <span className="text-3xl font-black text-blue-100 group-hover:text-blue-200 transition">0{i + 1}</span>
+                </div>
+                <div className="mt-3 font-semibold text-slate-800">{s.t}</div>
+                <div className="text-xs text-slate-500 mt-1">{s.d}</div>
+              </div>
+              {i < steps.length - 1 && (
+                <ChevronRight className="hidden md:block absolute -right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-300 z-10" />
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Cert list */}
+      <section className="bg-white rounded-2xl p-6 md:p-8 border border-blue-50 shadow-sm">
+        <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
+          <div>
+            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <Award className="w-5 h-5 text-blue-600" /> 在招认证 · 2025 年度第三批
+            </h2>
+            <p className="text-sm text-slate-500 mt-1">4 个认证方向 · 覆盖跨境电商核心岗位能力模型</p>
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            {["全部方向", "运营", "直播", "合规", "供应链"].map((c, i) => (
+              <button key={c} className={`px-3 py-1.5 rounded-full transition ${i === 0 ? "bg-blue-600 text-white shadow shadow-blue-500/30" : "bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600"}`}>
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          {certs.map((c) => (
+            <article key={c.code} className="group relative rounded-2xl border border-blue-50 bg-gradient-to-br from-white to-blue-50/40 p-5 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-100/60 hover:-translate-y-0.5 transition-all">
+              {c.hot && (
+                <div className="absolute -top-2 -right-2 px-2.5 py-1 rounded-lg bg-gradient-to-r from-orange-500 to-rose-500 text-white text-[10px] font-bold flex items-center gap-1 shadow-lg shadow-orange-500/30">
+                  <Flame className="w-3 h-3" /> 热门
+                </div>
+              )}
+              <div className="flex items-start gap-4">
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${c.levelColor} grid place-items-center text-white shadow-lg shrink-0`}>
+                  <Award className="w-7 h-7" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded bg-gradient-to-r ${c.levelColor} text-white`}>{c.level}</span>
+                    <span className="text-[11px] text-slate-400 font-mono">{c.code}</span>
+                  </div>
+                  <h3 className="mt-1.5 font-bold text-slate-800 group-hover:text-blue-600 transition leading-snug">{c.name}</h3>
+                  <p className="mt-1.5 text-xs text-slate-500 leading-relaxed line-clamp-2">{c.desc}</p>
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+                <div className="rounded-lg bg-white border border-blue-50 py-2">
+                  <div className="text-xs text-slate-400">考试时长</div>
+                  <div className="text-sm font-semibold text-slate-700 mt-0.5">{c.duration}</div>
+                </div>
+                <div className="rounded-lg bg-white border border-blue-50 py-2">
+                  <div className="text-xs text-slate-400">通过率</div>
+                  <div className="text-sm font-semibold text-emerald-600 mt-0.5">{c.passRate}%</div>
+                </div>
+                <div className="rounded-lg bg-white border border-blue-50 py-2">
+                  <div className="text-xs text-slate-400">已报名</div>
+                  <div className="text-sm font-semibold text-blue-600 mt-0.5">{(c.enrolled / 1000).toFixed(1)}k</div>
+                </div>
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {c.tags.map((t) => (
+                  <span key={t} className="text-[11px] px-2 py-0.5 rounded-md bg-blue-50 text-blue-600">#{t}</span>
+                ))}
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-dashed border-blue-100 flex items-center justify-between">
+                <div>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-xs text-slate-400">认证费</span>
+                    <span className="text-2xl font-bold text-orange-500">¥{c.price}</span>
+                    <span className="text-xs text-slate-400 line-through">¥{c.origin}</span>
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1">
+                    <Calendar className="w-3 h-3" /> 下次考期 {c.next}
+                  </div>
+                </div>
+                <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium hover:from-blue-600 hover:to-blue-700 shadow-md shadow-blue-500/30 hover:shadow-lg transition-all flex items-center gap-1 group-hover:gap-2">
+                  立即报名 <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Bottom: timeline + FAQ */}
+      <section className="grid md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 bg-white rounded-2xl p-6 md:p-8 border border-blue-50 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <Layers className="w-5 h-5 text-blue-600" /> 2025 年度考期安排
+          </h2>
+          <div className="mt-5 relative">
+            <div className="absolute left-3 top-2 bottom-2 w-px bg-gradient-to-b from-blue-200 via-blue-100 to-transparent" />
+            {[
+              { d: "07/12", s: "周六", t: "第三批 · 运营 / 直播方向", st: "报名中", c: "bg-emerald-500" },
+              { d: "08/03", s: "周日", t: "第三批 · 合规 / 供应链方向", st: "报名中", c: "bg-emerald-500" },
+              { d: "10/18", s: "周六", t: "第四批 · 全方向开考", st: "预约中", c: "bg-blue-500" },
+              { d: "12/13", s: "周六", t: "年度补考 · 全方向", st: "未开放", c: "bg-slate-400" },
+            ].map((e) => (
+              <div key={e.d} className="relative pl-10 pb-5 last:pb-0 group">
+                <div className={`absolute left-1.5 top-1 w-3 h-3 rounded-full ${e.c} ring-4 ring-white shadow`} />
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-xl font-bold text-slate-800">{e.d}</span>
+                    <span className="text-xs text-slate-400">{e.s}</span>
+                  </div>
+                  <span className={`text-[11px] px-2 py-0.5 rounded-full text-white ${e.c}`}>{e.st}</span>
+                </div>
+                <div className="text-sm text-slate-600 mt-0.5">{e.t}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 text-white shadow-xl shadow-blue-500/20 relative overflow-hidden">
+          <div className="absolute -right-8 -bottom-8 w-40 h-40 rounded-full bg-orange-400/20 blur-2xl" />
+          <h3 className="font-bold text-lg flex items-center gap-2">
+            <MessageCircle className="w-5 h-5" /> 常见问题
+          </h3>
+          <div className="mt-4 space-y-3 relative">
+            {faqs.map((f, i) => (
+              <details key={i} className="group bg-white/10 backdrop-blur rounded-xl p-3 border border-white/10 hover:bg-white/15 transition">
+                <summary className="cursor-pointer text-sm font-medium flex items-center justify-between list-none">
+                  <span className="flex items-center gap-2"><span className="text-orange-300">Q{i + 1}</span> {f.q}</span>
+                  <ChevronRight className="w-4 h-4 transition group-open:rotate-90" />
+                </summary>
+                <p className="mt-2 text-xs text-blue-50/90 leading-relaxed">{f.a}</p>
+              </details>
+            ))}
+          </div>
+          <button className="mt-5 w-full py-2.5 rounded-xl bg-white text-blue-700 font-semibold text-sm hover:bg-orange-300 hover:text-white transition flex items-center justify-center gap-2">
+            <Phone className="w-4 h-4" /> 027-8888 6688 招生专线
+          </button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function PlaceholderView({ title, desc }: { title: string; desc: string }) {
   return (
     <div className="bg-white rounded-2xl p-16 border border-blue-50 shadow-sm text-center">
