@@ -102,7 +102,7 @@ function Index() {
       {/* Footer */}
       <footer className="border-t border-blue-100 mt-12 bg-white/60">
         <div className="max-w-[1280px] mx-auto px-6 py-8 text-center text-xs text-slate-500">
-          © 2025 武汉市跨境电子商务协会 · 丝路云课堂 · 鄂ICP备2025001234号
+          © 2025 武汉市跨境电子商务协会 · 丝路电商人才平台 · 鄂ICP备2025001234号
         </div>
       </footer>
 
