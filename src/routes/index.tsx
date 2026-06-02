@@ -41,7 +41,7 @@ function Index() {
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 grid place-items-center text-white font-bold shadow-lg shadow-blue-500/30">丝</div>
             <div className="leading-tight">
-              <div className="font-bold text-slate-800">丝路云课堂</div>
+              <div className="font-bold text-slate-800">丝路电商人才平台</div>
               <div className="text-[10px] text-blue-600 tracking-widest">SILKROAD EDU</div>
             </div>
           </div>
