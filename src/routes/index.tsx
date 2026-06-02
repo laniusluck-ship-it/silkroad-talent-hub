@@ -394,6 +394,143 @@ function AcademyView() {
           </div>
         ))}
       </div>
+
+      {/* ====== 线下付费课程 ====== */}
+      <div>
+        <div className="flex items-end justify-between mb-4 px-1">
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-orange-500" /> 线下付费课程
+            </h3>
+            <p className="text-sm text-slate-500 mt-1">小班实操 · 名企导师 · 武汉光谷 / 汉阳 / 江岸 三大实训中心同步开班</p>
+          </div>
+          <div className="hidden md:flex items-center gap-2 text-xs">
+            <span className="px-2.5 py-1 rounded-md bg-orange-50 text-orange-600 font-medium">7 天无理由退款</span>
+            <span className="px-2.5 py-1 rounded-md bg-blue-50 text-blue-600 font-medium">结业推荐就业</span>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {[
+            {
+              title: "TikTok 跨境直播操盘手·实战集训营",
+              level: "进阶班",
+              days: "12 天 / 96 课时",
+              place: "武汉光谷实训中心",
+              start: "2025-07-08 开班",
+              teacher: "陈志远 · 字节跳动前 TSP 顾问",
+              price: 5980,
+              origin: 7980,
+              quota: "限招 30 人 · 已报 22 人",
+              tags: ["真号实操", "提供选品", "包就业推荐"],
+              hot: true,
+            },
+            {
+              title: "亚马逊精品化运营·企业内训营",
+              level: "高阶班",
+              days: "10 天 / 80 课时",
+              place: "武汉汉阳实训中心",
+              start: "2025-07-15 开班",
+              teacher: "刘晓楠 · 亚马逊 Top1000 卖家",
+              price: 6880,
+              origin: 8880,
+              quota: "限招 25 人 · 已报 18 人",
+              tags: ["ACoS 优化", "广告打法", "选品诊断"],
+              hot: false,
+            },
+            {
+              title: "独立站 + Google Ads 全链路实操班",
+              level: "进阶班",
+              days: "8 天 / 64 课时",
+              place: "武汉江岸实训中心",
+              start: "2025-07-22 开班",
+              teacher: "张涛 · 谷歌大中华区合作伙伴",
+              price: 4980,
+              origin: 6580,
+              quota: "限招 35 人 · 已报 27 人",
+              tags: ["Shopify 建站", "投放复盘", "数据追踪"],
+              hot: true,
+            },
+            {
+              title: "RCEP 关务合规与原产地实务班",
+              level: "认证班",
+              days: "5 天 / 40 课时",
+              place: "武汉光谷实训中心",
+              start: "2025-08-05 开班",
+              teacher: "李华 · 武汉海关关税处特聘讲师",
+              price: 3680,
+              origin: 4680,
+              quota: "限招 40 人 · 已报 12 人",
+              tags: ["证书可考", "海关现场", "案例教学"],
+              hot: false,
+            },
+            {
+              title: "海外社媒 KOL 营销操盘工坊",
+              level: "实战班",
+              days: "6 天 / 48 课时",
+              place: "武汉汉阳实训中心",
+              start: "2025-08-12 开班",
+              teacher: "Vivian Wu · TikTok 官方运营顾问",
+              price: 4280,
+              origin: 5680,
+              quota: "限招 30 人 · 已报 9 人",
+              tags: ["红人谈判", "脚本共创", "投流配合"],
+              hot: false,
+            },
+            {
+              title: "跨境电商管理者·总裁加速营",
+              level: "高管班",
+              days: "3 个月 · 周末班",
+              place: "武汉江岸实训中心",
+              start: "2025-09-06 开班",
+              teacher: "协会专家委员会 · 12 位行业大咖",
+              price: 19800,
+              origin: 25800,
+              quota: "限招 20 人 · 已报 6 人",
+              tags: ["游学考察", "私董会", "资源对接"],
+              hot: true,
+            },
+          ].map((c) => (
+            <div key={c.title} className="group relative bg-white rounded-2xl overflow-hidden border border-blue-50 shadow-sm hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all cursor-pointer flex flex-col">
+              <div className="relative h-32 bg-gradient-to-br from-orange-400 via-orange-500 to-red-500 overflow-hidden">
+                <div className="absolute inset-0 opacity-30" style={{ backgroundImage: "radial-gradient(circle at 20% 20%, white 1px, transparent 1px)", backgroundSize: "16px 16px" }} />
+                {c.hot && (
+                  <div className="absolute top-3 left-3 px-2.5 py-1 bg-white/95 text-orange-600 text-xs font-bold rounded-md flex items-center gap-1 shadow">
+                    <Flame className="w-3 h-3" /> 热报
+                  </div>
+                )}
+                <div className="absolute top-3 right-3 px-2 py-0.5 bg-black/30 backdrop-blur text-white text-[11px] rounded">{c.level}</div>
+                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
+                  <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{c.place}</span>
+                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{c.days}</span>
+                </div>
+              </div>
+              <div className="p-5 flex-1 flex flex-col">
+                <h4 className="font-semibold text-slate-800 group-hover:text-orange-600 transition line-clamp-2 min-h-[48px]">{c.title}</h4>
+                <div className="mt-2 text-xs text-slate-500 flex items-center gap-1.5"><User className="w-3.5 h-3.5" />{c.teacher}</div>
+                <div className="mt-2 text-xs text-slate-500 flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{c.start}</div>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {c.tags.map((t) => (
+                    <span key={t} className="px-2 py-0.5 text-[11px] bg-blue-50 text-blue-600 rounded">{t}</span>
+                  ))}
+                </div>
+                <div className="mt-4 pt-4 border-t border-dashed border-slate-100 flex items-end justify-between">
+                  <div>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-[11px] text-orange-500">¥</span>
+                      <span className="text-2xl font-bold text-orange-600">{c.price.toLocaleString()}</span>
+                      <span className="text-xs text-slate-400 line-through">¥{c.origin.toLocaleString()}</span>
+                    </div>
+                    <div className="text-[11px] text-slate-400 mt-0.5">{c.quota}</div>
+                  </div>
+                  <button className="px-4 py-2 text-sm bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg font-medium hover:from-orange-600 hover:to-orange-700 transition shadow shadow-orange-500/30">
+                    立即报名
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
