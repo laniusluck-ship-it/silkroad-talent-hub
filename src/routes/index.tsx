@@ -434,7 +434,7 @@ function HomeView() {
             {[
               { tag: "政策", title: "湖北省商务厅发布《2025 跨境电商高质量发展三年行动方案》", date: "06-02", hot: true },
               { tag: "补贴", title: "武汉光谷自贸片区跨境电商人才培训补贴申报指南（最高 5000 元/人）", date: "05-28", hot: true },
-              { tag: "活动", title: "第三届"楚汉出海"跨境电商人才双选会本月 18 日在汉举行", date: "05-25", hot: false },
+              { tag: "活动", title: "第三届\"楚汉出海\"跨境电商人才双选会本月 18 日在汉举行", date: "05-25", hot: false },
               { tag: "行业", title: "TikTok Shop 美区半托管模式上线，湖北卖家如何抢占红利？", date: "05-22", hot: false },
               { tag: "认证", title: "RCEP 原产地证签发新规解读，企业出口成本可降 8%-15%", date: "05-19", hot: false },
             ].map((n) => (
