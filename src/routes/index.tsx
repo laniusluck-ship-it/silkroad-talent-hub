@@ -234,14 +234,14 @@ function HomeView() {
         <div className="flex items-end justify-between mb-4 px-1">
           <div>
             <h3 className="text-xl font-bold text-slate-800">线下培训 · 实操基地</h3>
-            <p className="text-sm text-slate-500 mt-1">武汉光谷 · 黄石经开 · 宜昌自贸片区 三大实训中心</p>
+            <p className="text-sm text-slate-500 mt-1">武汉光谷 · 武汉汉阳 · 武汉江岸 三大实训中心</p>
           </div>
           <a className="text-sm text-blue-600 hover:text-blue-700 cursor-pointer flex items-center gap-1">查看全部 <ArrowRight className="w-3.5 h-3.5" /></a>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {[
-            { title: '跨境电商 TikTok "0" 到 "1" 实战启航班', date: "2025-06-15 ~ 06-28", teacher: "陈志远 · 字节跳动前 TSP 顾问", place: "武汉光谷基地", tag: "热招" },
-            { title: "亚马逊 FBA 选品与精品化运营进阶营", date: "2025-07-05 ~ 07-19", teacher: "刘晓楠 · 亚马逊 Top1000 卖家", place: "黄石经开基地", tag: "新开" },
+            { title: '跨境电商 TikTok "0" 到 "1" 实战启航班', date: "2025-06-15 ~ 06-28", teacher: "陈志远 · 字节跳动前 TSP 顾问", place: "武汉光谷实训中心", tag: "热招" },
+            { title: "亚马逊 FBA 选品与精品化运营进阶营", date: "2025-07-05 ~ 07-19", teacher: "刘晓楠 · 亚马逊 Top1000 卖家", place: "武汉汉阳实训中心", tag: "新开" },
           ].map((c) => (
             <div key={c.title} className="group bg-white rounded-2xl overflow-hidden border border-blue-50 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
               <div className="h-40 bg-gradient-to-br from-blue-400 via-blue-500 to-cyan-500 relative overflow-hidden">
