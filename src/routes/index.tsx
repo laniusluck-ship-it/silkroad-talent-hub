@@ -1045,6 +1045,206 @@ function ExamView() {
   );
 }
 
+/* ============ ABOUT ============ */
+function AboutView() {
+  const milestones = [
+    { y: "2016", t: "协会成立", d: "武汉市跨境电子商务协会经市民政局批准成立，首批会员单位 86 家。" },
+    { y: "2019", t: "国家级示范基地落地光谷", d: "推动光谷跨境电商产业园获批国家电子商务示范基地。" },
+    { y: "2022", t: "丝路云课堂上线", d: "联合 12 家头部企业共建一站式人才培训与就业服务平台。" },
+    { y: "2024", t: "三大实训中心建成", d: "武汉光谷、武汉汉阳、武汉江岸三大线下实训中心同步运营。" },
+    { y: "2025", t: "服务学员突破 5 万人", d: "累计认证持证人才 32,860 名，对接岗位 18,600+ 个。" },
+  ];
+
+  const partners = [
+    "亚马逊全球开店", "TikTok Shop", "阿里国际站", "速卖通", "Shopify",
+    "PingPong", "连连国际", "安克创新", "斑马技术", "极兔国际", "云途物流", "谷歌大中华区",
+  ];
+
+  const centers = [
+    { name: "武汉光谷实训中心", addr: "东湖高新区光谷大道 77 号 · 光谷跨境电商产业园 B 座 5F", area: "3,200㎡", seats: "320 工位", focus: "TikTok 直播 · 亚马逊运营" },
+    { name: "武汉汉阳实训中心", addr: "汉阳区龙阳大道 168 号 · 武汉跨境电商人才港 4F", area: "2,400㎡", seats: "240 工位", focus: "独立站 · 海外社媒营销" },
+    { name: "武汉江岸实训中心", addr: "江岸区解放大道 1158 号 · 长江紫都 T2 18F", area: "2,000㎡", seats: "200 工位", focus: "RCEP 关务 · 供应链管理" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Hero */}
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white p-8 md:p-12 shadow-xl shadow-blue-500/20">
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "radial-gradient(circle at 80% 20%, white 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+        <div className="relative max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-xs font-medium mb-4">
+            <ShieldCheck className="w-3.5 h-3.5" /> 武汉市跨境电子商务协会 · 官方授权
+          </div>
+          <h1 className="text-3xl md:text-5xl font-bold leading-tight">让每一位湖北青年<br />都能搭上跨境出海的快车</h1>
+          <p className="mt-4 text-blue-50/90 leading-relaxed max-w-2xl">
+            丝路云课堂是由武汉市跨境电子商务协会发起、湖北省商务厅指导、联合 320 余家头部跨境企业共建的"培训—认证—实训—就业"一站式人才服务平台，
+            旨在为湖北省乃至中部地区培育新一代跨境电商数字贸易人才。
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button className="px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 transition font-semibold text-sm shadow-lg shadow-orange-500/30 flex items-center gap-1.5">
+              <Download className="w-4 h-4" /> 下载平台介绍手册
+            </button>
+            <button className="px-5 py-2.5 rounded-xl bg-white/15 backdrop-blur hover:bg-white/25 transition font-medium text-sm border border-white/30 flex items-center gap-1.5">
+              <Phone className="w-4 h-4" /> 027-8888 6688
+            </button>
+          </div>
+        </div>
+        <div className="relative mt-8 grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { n: "9 年", l: "深耕跨境人才赛道" },
+            { n: "3 大", l: "武汉实训中心" },
+            { n: "320+", l: "共建名企" },
+            { n: "5 万+", l: "累计学员" },
+          ].map((s) => (
+            <div key={s.l} className="bg-white/15 backdrop-blur rounded-2xl p-4 border border-white/20">
+              <div className="text-2xl md:text-3xl font-bold">{s.n}</div>
+              <div className="text-xs text-blue-50/80 mt-1">{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Mission & Vision */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {[
+          { icon: Target, t: "使命", d: "以数字贸易教育赋能产业，让湖北跨境电商人才供给走在全国前列。", c: "from-blue-500 to-cyan-500" },
+          { icon: Sparkles, t: "愿景", d: "成为中部地区最具影响力的跨境电商人才孵化与产教融合枢纽。", c: "from-orange-500 to-red-500" },
+          { icon: Trophy, t: "价值观", d: "实战为本 · 学员第一 · 拥抱变化 · 长期主义。", c: "from-emerald-500 to-teal-500" },
+        ].map(({ icon: Ic, t, d, c }) => (
+          <div key={t} className="bg-white rounded-2xl p-6 border border-blue-50 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition">
+            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${c} grid place-items-center text-white mb-4 shadow-md`}>
+              <Ic className="w-6 h-6" />
+            </div>
+            <h3 className="text-lg font-bold text-slate-800">{t}</h3>
+            <p className="mt-2 text-sm text-slate-500 leading-relaxed">{d}</p>
+          </div>
+        ))}
+      </section>
+
+      {/* Training centers */}
+      <section className="bg-white rounded-2xl p-6 md:p-8 border border-blue-50 shadow-sm">
+        <div className="flex items-end justify-between mb-6">
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-blue-600" /> 武汉三大实训中心
+            </h3>
+            <p className="text-sm text-slate-500 mt-1">总面积 7,600㎡ · 760 个标准实操工位 · 7×12 小时开放</p>
+          </div>
+          <a className="hidden md:flex text-sm text-blue-600 hover:text-blue-700 cursor-pointer items-center gap-1">预约参观 <ArrowRight className="w-3.5 h-3.5" /></a>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {centers.map((c, i) => (
+            <div key={c.name} className="group relative rounded-2xl p-5 border border-blue-50 bg-gradient-to-br from-blue-50/60 to-white hover:shadow-lg hover:-translate-y-0.5 transition">
+              <div className="absolute top-5 right-5 w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white grid place-items-center font-bold text-sm shadow">0{i + 1}</div>
+              <h4 className="font-bold text-slate-800 text-lg pr-12">{c.name}</h4>
+              <div className="mt-3 space-y-2 text-sm text-slate-600">
+                <div className="flex items-start gap-2"><MapPin className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" /><span className="leading-relaxed">{c.addr}</span></div>
+                <div className="flex items-center gap-2"><Layers className="w-4 h-4 text-blue-500" /><span>{c.area} · {c.seats}</span></div>
+                <div className="flex items-center gap-2"><BookOpen className="w-4 h-4 text-blue-500" /><span>主攻方向：{c.focus}</span></div>
+              </div>
+              <button className="mt-4 w-full py-2 rounded-lg bg-white border border-blue-100 text-blue-600 text-sm font-medium hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">查看实训环境</button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Services */}
+      <section className="bg-white rounded-2xl p-6 md:p-8 border border-blue-50 shadow-sm">
+        <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <Star className="w-5 h-5 text-orange-500" /> 我们提供的核心服务
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { icon: BookOpen, t: "在线学习", d: "1,200+ 节精品课" },
+            { icon: GraduationCap, t: "线下集训", d: "三大中心实操营" },
+            { icon: BadgeCheck, t: "职业认证", d: "L1-L3 三级认证" },
+            { icon: Briefcase, t: "就业推荐", d: "186 家合作企业" },
+            { icon: Users, t: "校企共建", d: "27 所高校合作" },
+            { icon: FileText, t: "政策申报", d: "助企申报补贴" },
+            { icon: TrendingUp, t: "出海陪跑", d: "店铺诊断咨询" },
+            { icon: MessageCircle, t: "专家顾问", d: "1V1 在线答疑" },
+          ].map(({ icon: Ic, t, d }) => (
+            <div key={t} className="rounded-xl p-4 border border-blue-50 hover:bg-blue-50/40 hover:border-blue-200 transition cursor-pointer text-center">
+              <div className="w-11 h-11 mx-auto rounded-xl bg-blue-50 grid place-items-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition">
+                <Ic className="w-5 h-5" />
+              </div>
+              <div className="mt-3 font-semibold text-slate-800 text-sm">{t}</div>
+              <div className="text-xs text-slate-500 mt-1">{d}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Milestones */}
+      <section className="bg-white rounded-2xl p-6 md:p-8 border border-blue-50 shadow-sm">
+        <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <Clock className="w-5 h-5 text-blue-600" /> 发展历程
+        </h3>
+        <div className="relative">
+          <div className="absolute left-[7px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-200 via-blue-300 to-transparent" />
+          <div className="space-y-6">
+            {milestones.map((m, i) => (
+              <div key={m.y} className={`relative md:grid md:grid-cols-2 md:gap-10 ${i % 2 === 0 ? "" : "md:[&>*:first-child]:order-2"}`}>
+                <div className={`pl-8 md:pl-0 ${i % 2 === 0 ? "md:text-right md:pr-10" : "md:pl-10"}`}>
+                  <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-1.5 w-4 h-4 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 ring-4 ring-blue-50" />
+                  <div className="text-2xl font-bold text-blue-600">{m.y}</div>
+                  <div className="mt-1 font-semibold text-slate-800">{m.t}</div>
+                  <p className="mt-1.5 text-sm text-slate-500 leading-relaxed">{m.d}</p>
+                </div>
+                <div />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Partners */}
+      <section className="bg-white rounded-2xl p-6 md:p-8 border border-blue-50 shadow-sm">
+        <div className="flex items-end justify-between mb-5">
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <Users className="w-5 h-5 text-blue-600" /> 战略合作伙伴
+            </h3>
+            <p className="text-sm text-slate-500 mt-1">与 320+ 跨境头部平台与服务商深度共建</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+          {partners.map((p) => (
+            <div key={p} className="aspect-[3/1] rounded-xl bg-gradient-to-br from-blue-50 to-white border border-blue-50 grid place-items-center text-xs md:text-sm font-medium text-slate-700 hover:shadow-md hover:text-blue-600 transition cursor-pointer text-center px-2">
+              {p}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Contact CTA */}
+      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-blue-900 to-blue-700 text-white p-8 md:p-10">
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "linear-gradient(45deg, white 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+        <div className="relative grid md:grid-cols-3 gap-6 items-center">
+          <div className="md:col-span-2">
+            <h3 className="text-2xl md:text-3xl font-bold">企业 · 高校 · 政府 合作请联系我们</h3>
+            <p className="mt-3 text-blue-100/80 max-w-xl">无论您是希望招募跨境人才的企业、共建专业的高校，还是希望落地培训项目的政府部门，我们都将提供定制化的解决方案。</p>
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+              <div className="flex items-center gap-2 text-blue-50"><Phone className="w-4 h-4" /> 027-8888 6688</div>
+              <div className="flex items-center gap-2 text-blue-50"><MessageCircle className="w-4 h-4" /> 商务合作：silkroad@whcbec.org</div>
+              <div className="flex items-center gap-2 text-blue-50"><MapPin className="w-4 h-4" /> 武汉东湖高新区光谷大道 77 号</div>
+              <div className="flex items-center gap-2 text-blue-50"><Clock className="w-4 h-4" /> 周一至周日 9:00 - 21:00</div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl p-5 text-center text-slate-700">
+            <div className="w-32 h-32 mx-auto rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 grid place-items-center">
+              <QrCode className="w-16 h-16 text-blue-600" />
+            </div>
+            <div className="mt-3 text-sm font-semibold text-slate-800">扫码添加专属顾问</div>
+            <div className="text-xs text-slate-500 mt-1">领取《跨境电商人才白皮书 2025》</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+
 function PlaceholderView({ title, desc }: { title: string; desc: string }) {
   return (
     <div className="bg-white rounded-2xl p-16 border border-blue-50 shadow-sm text-center">
