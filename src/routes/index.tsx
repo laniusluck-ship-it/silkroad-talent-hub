@@ -271,6 +271,235 @@ function HomeView() {
           ))}
         </div>
       </div>
+
+      {/* 热门职位精选 */}
+      <div>
+        <div className="flex items-end justify-between mb-4 px-1">
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <Flame className="w-5 h-5 text-orange-500" /> 热门职位精选
+            </h3>
+            <p className="text-sm text-slate-500 mt-1">本周新增 1,286 个跨境电商优质岗位 · 平均薪资 12.8K</p>
+          </div>
+          <a className="text-sm text-blue-600 hover:text-blue-700 cursor-pointer flex items-center gap-1">查看更多 <ArrowRight className="w-3.5 h-3.5" /></a>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            { title: "亚马逊高级运营经理", salary: "15-25K·13薪", company: "武汉安克创新科技", tags: ["3-5年", "本科", "FBA"], hot: true, logo: "A" },
+            { title: "TikTok 跨境直播操盘手", salary: "20-35K·14薪", company: "武汉斑马网络科技", tags: ["2-5年", "不限", "美区"], hot: true, logo: "T" },
+            { title: "独立站 Shopify 运营总监", salary: "25-40K", company: "湖北华信跨境电商集团", tags: ["5年+", "本科", "DTC"], hot: false, logo: "H" },
+            { title: "海外仓供应链经理", salary: "18-28K", company: "顺丰国际武汉分公司", tags: ["3年+", "本科", "美国/德国"], hot: false, logo: "S" },
+            { title: "Google Ads 投放专员", salary: "10-18K", company: "武汉光谷数字贸易", tags: ["1-3年", "大专", "B2B"], hot: true, logo: "G" },
+            { title: "跨境电商高级选品", salary: "12-20K·13薪", company: "湖北良品铺子海外", tags: ["2-4年", "本科", "食品"], hot: false, logo: "L" },
+          ].map((j) => (
+            <div key={j.title} className="group bg-white rounded-2xl p-5 border border-blue-50 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all cursor-pointer">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-semibold text-slate-800 group-hover:text-blue-600 transition truncate">{j.title}</h4>
+                    {j.hot && <span className="px-1.5 py-0.5 bg-orange-100 text-orange-600 text-[10px] rounded font-medium flex-shrink-0">急聘</span>}
+                  </div>
+                  <div className="mt-1 text-orange-500 font-bold text-base">{j.salary}</div>
+                </div>
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 grid place-items-center text-white font-bold flex-shrink-0">{j.logo}</div>
+              </div>
+              <div className="mt-3 text-xs text-slate-500 flex items-center gap-1.5">
+                <Building2 className="w-3.5 h-3.5" /> <span className="truncate">{j.company}</span>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {j.tags.map((t) => (
+                  <span key={t} className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[11px] rounded">{t}</span>
+                ))}
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-[11px] text-slate-400 flex items-center gap-1"><MapPin className="w-3 h-3" />武汉 · 光谷</span>
+                <button className="text-xs text-blue-600 hover:text-white hover:bg-blue-600 px-3 py-1 rounded-md transition font-medium">立即投递</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 名企招聘墙 */}
+      <div className="bg-white rounded-2xl p-6 border border-blue-50 shadow-sm">
+        <div className="flex items-end justify-between mb-5">
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-blue-600" /> 名企招聘墙
+            </h3>
+            <p className="text-sm text-slate-500 mt-1">320+ 头部跨境企业 · 共筑荆楚出海新生态</p>
+          </div>
+          <a className="text-sm text-blue-600 hover:text-blue-700 cursor-pointer flex items-center gap-1">企业全景 <ArrowRight className="w-3.5 h-3.5" /></a>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          {[
+            { n: "安克创新", c: "from-blue-500 to-blue-700", num: 38 },
+            { n: "斑马网络", c: "from-orange-500 to-red-500", num: 26 },
+            { n: "良品铺子", c: "from-red-500 to-pink-500", num: 12 },
+            { n: "华工科技", c: "from-emerald-500 to-teal-600", num: 18 },
+            { n: "九州通医药", c: "from-cyan-500 to-blue-500", num: 9 },
+            { n: "卷皮网", c: "from-purple-500 to-indigo-600", num: 15 },
+            { n: "周黑鸭海外", c: "from-slate-700 to-slate-900", num: 6 },
+            { n: "立白集团", c: "from-sky-500 to-blue-600", num: 11 },
+            { n: "稻花香集团", c: "from-amber-500 to-orange-600", num: 8 },
+            { n: "顺丰国际", c: "from-blue-600 to-indigo-600", num: 22 },
+            { n: "菜鸟海外仓", c: "from-orange-400 to-yellow-500", num: 17 },
+            { n: "TCL 海外", c: "from-blue-500 to-cyan-500", num: 14 },
+          ].map((e) => (
+            <div key={e.n} className="group bg-gradient-to-br from-slate-50 to-blue-50/50 hover:from-white hover:to-white border border-blue-50 hover:border-blue-200 rounded-xl p-3 flex items-center gap-3 cursor-pointer transition-all hover:shadow-md">
+              <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${e.c} grid place-items-center text-white font-bold text-sm flex-shrink-0`}>{e.n.charAt(0)}</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-medium text-slate-800 truncate group-hover:text-blue-600 transition">{e.n}</div>
+                <div className="text-[11px] text-orange-500">招聘 {e.num} 岗</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 明星导师团 */}
+      <div>
+        <div className="flex items-end justify-between mb-4 px-1">
+          <div>
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <Star className="w-5 h-5 text-orange-500" /> 明星导师团
+            </h3>
+            <p className="text-sm text-slate-500 mt-1">来自字节、亚马逊、阿里国际站、Google 的资深专家亲授</p>
+          </div>
+          <a className="text-sm text-blue-600 hover:text-blue-700 cursor-pointer flex items-center gap-1">全部师资 <ArrowRight className="w-3.5 h-3.5" /></a>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { n: "陈志远", t: "TikTok Shop 操盘专家", c: "from-blue-500 to-cyan-500", tag: "10年+ 跨境直播", st: 3286 },
+            { n: "刘晓楠", t: "亚马逊 Top1000 卖家", c: "from-orange-500 to-red-500", tag: "FBA 精品化运营", st: 2654 },
+            { n: "Vivian Wu", t: "TikTok 官方运营顾问", c: "from-purple-500 to-pink-500", tag: "海外社媒爆款", st: 4128 },
+            { n: "张涛", t: "Google 大中华区 PA", c: "from-emerald-500 to-teal-500", tag: "独立站 SEO/SEM", st: 1986 },
+          ].map((p) => (
+            <div key={p.n} className="bg-white rounded-2xl p-5 border border-blue-50 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all text-center">
+              <div className={`w-20 h-20 mx-auto rounded-full bg-gradient-to-br ${p.c} grid place-items-center text-white text-2xl font-bold ring-4 ring-blue-50`}>
+                {p.n.charAt(0)}
+              </div>
+              <div className="mt-3 font-semibold text-slate-800">{p.n}</div>
+              <div className="text-xs text-slate-500 mt-0.5">{p.t}</div>
+              <div className="mt-2 inline-block px-2 py-0.5 bg-blue-50 text-blue-600 text-[11px] rounded">{p.tag}</div>
+              <div className="mt-3 text-[11px] text-slate-400">{p.st.toLocaleString()} 学员 · 4.9 ★</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 就业喜报 + 政策资讯 */}
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12 lg:col-span-7 bg-white rounded-2xl p-6 border border-blue-50 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-orange-500" /> 学员就业喜报
+            </h3>
+            <a className="text-xs text-blue-600 hover:text-blue-700 cursor-pointer">更多喜报 →</a>
+          </div>
+          <div className="space-y-3">
+            {[
+              { n: "张同学", from: "TikTok 直播运营进阶班", to: "斑马网络 · 跨境直播主管", salary: "18K·14薪", c: "from-orange-500 to-red-500" },
+              { n: "李同学", from: "亚马逊 FBA 精品化运营营", to: "安克创新 · 高级运营经理", salary: "22K·13薪", c: "from-blue-500 to-cyan-500" },
+              { n: "王同学", from: "独立站从 0 到 1 实战班", to: "良品铺子海外 · 独立站负责人", salary: "20K·12薪", c: "from-emerald-500 to-teal-500" },
+              { n: "陈同学", from: "RCEP 关务合规精讲班", to: "九州通医药 · 国际事业部", salary: "15K·15薪", c: "from-purple-500 to-pink-500" },
+            ].map((s) => (
+              <div key={s.n} className="flex items-center gap-4 p-3 bg-gradient-to-r from-blue-50/50 to-transparent rounded-xl hover:from-blue-50 transition group">
+                <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${s.c} grid place-items-center text-white font-semibold flex-shrink-0`}>{s.n.charAt(0)}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm text-slate-800">
+                    <b>{s.n}</b> <span className="text-slate-400">结业于</span> {s.from}
+                  </div>
+                  <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                    <ArrowRight className="w-3 h-3 text-blue-500" /> 成功入职 <span className="text-blue-600 font-medium">{s.to}</span>
+                  </div>
+                </div>
+                <div className="text-right flex-shrink-0">
+                  <div className="text-orange-500 font-bold text-sm">{s.salary}</div>
+                  <div className="text-[10px] text-slate-400">offer 已确认</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="col-span-12 lg:col-span-5 bg-white rounded-2xl p-6 border border-blue-50 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <Newspaper className="w-5 h-5 text-blue-600" /> 政策与行业资讯
+            </h3>
+            <a className="text-xs text-blue-600 hover:text-blue-700 cursor-pointer">全部 →</a>
+          </div>
+          <div className="space-y-3">
+            {[
+              { tag: "政策", title: "湖北省商务厅发布《2025 跨境电商高质量发展三年行动方案》", date: "06-02", hot: true },
+              { tag: "补贴", title: "武汉光谷自贸片区跨境电商人才培训补贴申报指南（最高 5000 元/人）", date: "05-28", hot: true },
+              { tag: "活动", title: "第三届"楚汉出海"跨境电商人才双选会本月 18 日在汉举行", date: "05-25", hot: false },
+              { tag: "行业", title: "TikTok Shop 美区半托管模式上线，湖北卖家如何抢占红利？", date: "05-22", hot: false },
+              { tag: "认证", title: "RCEP 原产地证签发新规解读，企业出口成本可降 8%-15%", date: "05-19", hot: false },
+            ].map((n) => (
+              <div key={n.title} className="flex items-start gap-3 group cursor-pointer">
+                <span className={`mt-0.5 px-1.5 py-0.5 text-[10px] rounded font-medium flex-shrink-0 ${
+                  n.tag === "政策" ? "bg-blue-100 text-blue-600" :
+                  n.tag === "补贴" ? "bg-orange-100 text-orange-600" :
+                  n.tag === "活动" ? "bg-emerald-100 text-emerald-600" :
+                  n.tag === "认证" ? "bg-purple-100 text-purple-600" :
+                  "bg-slate-100 text-slate-600"
+                }`}>{n.tag}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm text-slate-700 group-hover:text-blue-600 transition line-clamp-2">
+                    {n.title}
+                    {n.hot && <Flame className="inline w-3 h-3 text-orange-500 ml-1" />}
+                  </div>
+                </div>
+                <span className="text-[11px] text-slate-400 flex-shrink-0">{n.date}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 平台服务能力 */}
+      <div className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 rounded-2xl p-8 shadow-lg shadow-blue-500/20 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: "radial-gradient(circle at 30% 40%, white 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }} />
+        <div className="relative">
+          <h3 className="text-2xl font-bold text-white text-center">一站式跨境电商人才培养闭环</h3>
+          <p className="text-white/80 text-center text-sm mt-2">培训 · 认证 · 实训 · 就业 · 创业 · 出海，五位一体服务体系</p>
+          <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-3">
+            {[
+              { i: BookOpen, t: "在线培训", d: "1,200+ 精品课" },
+              { i: BadgeCheck, t: "职业认证", d: "23 个考点" },
+              { i: Target, t: "实训基地", d: "三大实训中心" },
+              { i: Briefcase, t: "就业服务", d: "98.6% 就业率" },
+              { i: Layers, t: "企业内训", d: "186 家服务" },
+            ].map((s) => (
+              <div key={s.t} className="bg-white/15 backdrop-blur rounded-xl p-4 text-center hover:bg-white/25 transition cursor-pointer">
+                <s.i className="w-7 h-7 text-white mx-auto" />
+                <div className="mt-2 text-white font-semibold text-sm">{s.t}</div>
+                <div className="text-white/70 text-[11px] mt-0.5">{s.d}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 合作伙伴 */}
+      <div className="bg-white rounded-2xl p-6 border border-blue-50 shadow-sm">
+        <div className="text-center mb-5">
+          <h3 className="text-lg font-bold text-slate-800">战略合作伙伴</h3>
+          <p className="text-xs text-slate-500 mt-1">政府机构 · 行业协会 · 头部平台 · 金融服务 共筑生态</p>
+        </div>
+        <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-3">
+          {["湖北省商务厅","武汉海关","光谷自贸区","Amazon","TikTok Shop","阿里国际站","Shopee","Lazada","Google","Meta","PayPal","义乌商城"].map((p) => (
+            <div key={p} className="h-14 rounded-lg border border-slate-100 bg-slate-50/50 grid place-items-center text-xs text-slate-500 hover:text-blue-600 hover:border-blue-200 hover:bg-white transition cursor-pointer text-center px-2">
+              {p}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
