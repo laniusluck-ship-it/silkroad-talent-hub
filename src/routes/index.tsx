@@ -1077,7 +1077,7 @@ function AboutView() {
           </div>
           <h1 className="text-3xl md:text-5xl font-bold leading-tight">让每一位湖北青年<br />都能搭上跨境出海的快车</h1>
           <p className="mt-4 text-blue-50/90 leading-relaxed max-w-2xl">
-            丝路云课堂是由武汉市跨境电子商务协会发起、湖北省商务厅指导、联合 320 余家头部跨境企业共建的"培训—认证—实训—就业"一站式人才服务平台，
+            丝路电商人才平台是由武汉市跨境电子商务协会发起、湖北省商务厅指导、联合 320 余家头部跨境企业共建的"培训—认证—实训—就业"一站式人才服务平台，
             旨在为湖北省乃至中部地区培育新一代跨境电商数字贸易人才。
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
