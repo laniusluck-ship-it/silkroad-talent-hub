@@ -11,7 +11,7 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "丝路云课堂 — 湖北跨境电商人才培训与就业平台" },
+      { title: "丝路电商人才平台 — 湖北跨境电商人才培训与就业平台" },
       { name: "description", content: "湖北省跨境电商人才一站式培训、认证与就业平台。" },
     ],
   }),
