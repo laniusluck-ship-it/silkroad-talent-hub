@@ -95,7 +95,7 @@ function Index() {
           {tab === "jobs" && <JobsView />}
           {tab === "news" && <NewsView />}
           {tab === "exam" && <ExamView />}
-          {tab === "about" && <PlaceholderView title="关于平台" desc="武汉市跨境电子商务协会 · 官方授权培训与就业服务平台" />}
+          {tab === "about" && <AboutView />}
         </div>
       </main>
 
