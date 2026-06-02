@@ -665,7 +665,7 @@ function JobsView() {
 function NewsView() {
   const notices = [
     { title: "关于举办 2025 年湖北省跨境电商创业大赛的通知", date: "2025-05-20" },
-    { title: "丝路云课堂 6 月份课程更新与直播排期公告", date: "2025-05-18" },
+    { title: "丝路电商人才平台 6 月份课程更新与直播排期公告", date: "2025-05-18" },
     { title: "RCEP 原产地证签发培训班开始报名（限 50 人）", date: "2025-05-15" },
   ];
   const news = [
