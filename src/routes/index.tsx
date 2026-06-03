@@ -1504,6 +1504,300 @@ function AboutView() {
 }
 
 
+/* ============ CONTEST ============ */
+function ContestView() {
+  const cats = ["全部", "国家级", "省级", "行业级", "校园赛", "创业赛", "直播带货"];
+  const [cat, setCat] = useState("全部");
+  const [signupOpen, setSignupOpen] = useState<string | null>(null);
+  const [form, setForm] = useState({ name: "", phone: "", school: "", major: "", team: "", members: "1" });
+  const [submitted, setSubmitted] = useState(false);
+
+  const contests = [
+    {
+      id: "c1", lvl: "国家级", lvlColor: "bg-red-500", status: "报名中", statusColor: "bg-emerald-500",
+      title: '第十届"互联网+"大学生跨境电商创新创业大赛',
+      host: "教育部 · 中国电子商务协会 · 阿里国际站",
+      time: "2025-06-01 至 2025-07-30 报名 / 09-15 决赛",
+      addr: "线上初赛 + 武汉光谷决赛", num: 12860, prize: "¥ 50 万", quota: "本/专科在校生",
+      tags: ["创新创业", "团队赛", "保研加分"], cover: "from-red-500 via-orange-500 to-amber-500",
+    },
+    {
+      id: "c2", lvl: "省级", lvlColor: "bg-blue-600", status: "报名中", statusColor: "bg-emerald-500",
+      title: "2025 湖北省大学生跨境电商技能大赛",
+      host: "湖北省商务厅 · 湖北省教育厅 · 武汉跨境电商协会",
+      time: "2025-06-15 至 2025-08-15 报名 / 10-12 决赛",
+      addr: "湖北省 28 所高校联合举办 · 决赛武汉汉阳实训中心", num: 3628, prize: "¥ 20 万", quota: "湖北高校在校生",
+      tags: ["亚马逊", "TikTok", "Shopify"], cover: "from-blue-600 via-cyan-500 to-teal-500",
+    },
+    {
+      id: "c3", lvl: "行业级", lvlColor: "bg-orange-500", status: "报名中", statusColor: "bg-emerald-500",
+      title: "TikTok Shop 校园直播带货精英赛 · 2025",
+      host: "TikTok Shop · 武汉跨境电商协会",
+      time: "2025-07-01 至 2025-09-10 报名 / 11-08 总决赛",
+      addr: "线上直播赛 + 上海总决赛", num: 5128, prize: "¥ 30 万 + 字节实习 Offer", quota: "高校在校生 / 应届生",
+      tags: ["直播带货", "短视频", "签约机会"], cover: "from-pink-500 via-rose-500 to-orange-500",
+    },
+    {
+      id: "c4", lvl: "国家级", lvlColor: "bg-red-500", status: "即将开始", statusColor: "bg-orange-500",
+      title: "全国高校跨境电商创新创业实践大赛（POCIB）",
+      host: "中国国际贸易学会 · 对外经贸大学",
+      time: "2025-09-01 至 2025-10-30 报名 / 12-20 决赛",
+      addr: "线上模拟仿真赛", num: 8420, prize: "¥ 25 万 + 名企保送实习", quota: "全国高校在校生",
+      tags: ["虚拟仿真", "外贸全流程"], cover: "from-indigo-500 via-purple-500 to-pink-500",
+    },
+    {
+      id: "c5", lvl: "省级", lvlColor: "bg-blue-600", status: "报名中", statusColor: "bg-emerald-500",
+      title: "中部六省高校独立站运营对抗赛",
+      host: "湖北省跨境电商商会 · Shopify 大中华区",
+      time: "2025-06-20 至 2025-08-25 报名", addr: "武汉光谷实训中心",
+      num: 1856, prize: "¥ 15 万 + Shopify Plus 商家推荐位", quota: "高校在校生 / 团队",
+      tags: ["独立站", "Google Ads", "团队赛"], cover: "from-emerald-500 via-teal-500 to-cyan-500",
+    },
+    {
+      id: "c6", lvl: "校园赛", lvlColor: "bg-purple-500", status: "报名中", statusColor: "bg-emerald-500",
+      title: "丝路电商人才平台 · 校园选品达人争霸赛",
+      host: "丝路电商人才平台 · 安克创新",
+      time: "全年滚动报名 · 每月一期", addr: "线上 + 武汉江岸实训中心",
+      num: 9234, prize: "¥ 5 万 / 期 + 实习直通", quota: "本/专科在校生 个人",
+      tags: ["个人赛", "选品分析", "新手友好"], cover: "from-amber-500 via-yellow-500 to-lime-500",
+    },
+  ];
+
+  const filtered = cat === "全部" ? contests : contests.filter((c) => c.lvl === cat);
+
+  return (
+    <div className="space-y-6">
+      {/* Hero */}
+      <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 p-8 shadow-lg shadow-orange-500/20">
+        <div className="absolute inset-0 opacity-20" style={{
+          backgroundImage: "radial-gradient(circle at 20% 30%, white 1.5px, transparent 1.5px), radial-gradient(circle at 70% 60%, white 1px, transparent 1px)",
+          backgroundSize: "60px 60px, 80px 80px",
+        }} />
+        <div className="relative grid md:grid-cols-2 gap-6 items-center">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 backdrop-blur text-white text-xs font-semibold rounded-full mb-4">
+              <Trophy className="w-3 h-3" /> 大学生跨境电商比赛专区
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight">以赛促学 · 以赛促就业</h1>
+            <p className="text-white/90 mt-3 text-sm md:text-base">汇聚 36 项国家级 / 省级 / 行业级跨境电商赛事 · 一站式报名 · 名企直通车 · 奖金池超 ¥ 500 万</p>
+            <div className="mt-5 flex gap-3">
+              <button className="px-5 py-2.5 bg-white text-orange-600 font-semibold text-sm rounded-lg hover:bg-orange-50 transition shadow-lg">立即报名参赛</button>
+              <button className="px-5 py-2.5 bg-white/15 backdrop-blur text-white font-medium text-sm rounded-lg hover:bg-white/25 transition border border-white/30">下载赛事手册</button>
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { n: "36+", l: "在办赛事" },
+              { n: "62,800", l: "参赛学员" },
+              { n: "¥ 500万", l: "奖金池" },
+              { n: "186", l: "保送企业" },
+              { n: "78", l: "合作高校" },
+              { n: "98.2%", l: "获奖就业率" },
+            ].map((s) => (
+              <div key={s.l} className="bg-white/15 backdrop-blur rounded-xl p-3 text-center">
+                <div className="text-white font-bold text-lg">{s.n}</div>
+                <div className="text-white/80 text-[11px] mt-0.5">{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 筛选 */}
+      <div className="bg-white rounded-2xl p-4 border border-blue-50 shadow-sm flex flex-wrap items-center gap-2">
+        <span className="text-sm text-slate-500 mr-2">赛事级别：</span>
+        {cats.map((c) => (
+          <button
+            key={c}
+            onClick={() => setCat(c)}
+            className={`px-3.5 py-1.5 rounded-full text-sm transition ${
+              cat === c ? "bg-blue-600 text-white shadow shadow-blue-500/30" : "bg-slate-50 text-slate-600 hover:bg-blue-50 hover:text-blue-600"
+            }`}
+          >
+            {c}
+          </button>
+        ))}
+        <div className="ml-auto text-xs text-slate-500">共 <b className="text-orange-500">{filtered.length}</b> 项赛事</div>
+      </div>
+
+      {/* 赛事卡片网格 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {filtered.map((c) => (
+          <div key={c.id} className="group bg-white rounded-2xl overflow-hidden border border-blue-50 shadow-sm hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all">
+            <div className={`relative h-32 bg-gradient-to-br ${c.cover} overflow-hidden`}>
+              <div className="absolute inset-0 opacity-25" style={{
+                backgroundImage: "linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%)",
+                backgroundSize: "200% 200%",
+              }} />
+              <div className="absolute top-3 left-3 flex gap-2">
+                <span className={`px-2 py-0.5 ${c.lvlColor} text-white text-[10px] rounded font-semibold`}>{c.lvl}</span>
+                <span className={`px-2 py-0.5 ${c.statusColor} text-white text-[10px] rounded font-semibold`}>{c.status}</span>
+              </div>
+              <Trophy className="absolute right-4 bottom-3 w-12 h-12 text-white/60" />
+              <div className="absolute left-3 bottom-3 text-white">
+                <div className="text-[10px] uppercase tracking-widest opacity-80">PRIZE POOL</div>
+                <div className="font-bold text-lg">{c.prize}</div>
+              </div>
+            </div>
+            <div className="p-5">
+              <h4 className="font-semibold text-slate-800 leading-snug group-hover:text-blue-600 transition line-clamp-2 min-h-[44px]">{c.title}</h4>
+              <div className="mt-3 space-y-1.5 text-xs text-slate-500">
+                <div className="flex items-start gap-1.5"><Building2 className="w-3 h-3 mt-0.5 flex-shrink-0" /><span>主办：{c.host}</span></div>
+                <div className="flex items-start gap-1.5"><Clock className="w-3 h-3 mt-0.5 flex-shrink-0" /><span>{c.time}</span></div>
+                <div className="flex items-start gap-1.5"><MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" /><span>{c.addr}</span></div>
+                <div className="flex items-start gap-1.5"><GraduationCap className="w-3 h-3 mt-0.5 flex-shrink-0" /><span>参赛对象：{c.quota}</span></div>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {c.tags.map((t) => (
+                  <span key={t} className="px-2 py-0.5 bg-orange-50 text-orange-600 text-[11px] rounded">{t}</span>
+                ))}
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-[11px] text-slate-400">已有 <b className="text-orange-500">{c.num.toLocaleString()}</b> 人报名</span>
+                <button
+                  onClick={() => { setSignupOpen(c.id); setSubmitted(false); }}
+                  className="px-4 py-1.5 text-xs bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg hover:from-orange-600 hover:to-amber-600 transition font-medium shadow-md shadow-orange-500/30"
+                >
+                  立即报名 →
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 报名流程 */}
+      <div className="bg-white rounded-2xl p-6 border border-blue-50 shadow-sm">
+        <h3 className="text-xl font-bold text-slate-800 text-center">四步参赛流程</h3>
+        <p className="text-sm text-slate-500 text-center mt-1">最快 3 分钟完成报名，赛前 7 天获赠官方备赛课程</p>
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { i: "1", t: "在线报名", d: "填写信息 / 组队", c: "from-blue-500 to-cyan-500" },
+            { i: "2", t: "赛前培训", d: "导师带训 / 模拟", c: "from-orange-500 to-amber-500" },
+            { i: "3", t: "正式参赛", d: "线上 + 线下评审", c: "from-purple-500 to-pink-500" },
+            { i: "4", t: "颁奖直通", d: "奖金 / 实习 / 保研", c: "from-emerald-500 to-teal-500" },
+          ].map((s, i) => (
+            <div key={s.i} className="relative">
+              <div className="bg-gradient-to-br from-slate-50 to-blue-50/30 rounded-xl p-5 text-center hover:shadow-md transition">
+                <div className={`w-12 h-12 mx-auto rounded-full bg-gradient-to-br ${s.c} grid place-items-center text-white font-bold text-lg`}>{s.i}</div>
+                <div className="mt-3 font-semibold text-slate-800">{s.t}</div>
+                <div className="text-xs text-slate-500 mt-1">{s.d}</div>
+              </div>
+              {i < 3 && <ArrowRight className="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 历届回顾 + 合作高校 */}
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12 lg:col-span-7 bg-white rounded-2xl p-6 border border-blue-50 shadow-sm">
+          <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4">
+            <Star className="w-5 h-5 text-orange-500" /> 历届赛事精彩瞬间
+          </h3>
+          <div className="space-y-3">
+            {[
+              { y: "2024", t: '"互联网+"国赛湖北赛区金奖 12 项，创历史新高', n: "湖北高校" },
+              { y: "2024", t: "TikTok Shop 校园赛武汉大学战队全国冠军，签约字节跳动", n: "武汉大学" },
+              { y: "2023", t: "湖北省跨境电商技能大赛 2,800+ 学员参赛，36 人获保送实习", n: "湖北省赛" },
+              { y: "2023", t: "POCIB 国赛华中赛区 87 所高校联动，覆盖学员超 2 万人", n: "华中赛区" },
+            ].map((h) => (
+              <div key={h.t} className="flex items-start gap-4 p-3 rounded-xl hover:bg-blue-50/50 transition cursor-pointer group">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-100 to-amber-100 grid place-items-center text-orange-600 font-bold flex-shrink-0">{h.y}</div>
+                <div className="flex-1">
+                  <div className="text-sm text-slate-800 group-hover:text-blue-600 transition">{h.t}</div>
+                  <div className="text-[11px] text-slate-400 mt-1">{h.n}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="col-span-12 lg:col-span-5 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-2xl p-6 text-white shadow-lg shadow-blue-500/20">
+          <h3 className="text-lg font-bold flex items-center gap-2">
+            <GraduationCap className="w-5 h-5" /> 78 所合作高校
+          </h3>
+          <p className="text-white/80 text-xs mt-1">覆盖湖北全部本/专科跨境电商相关院校</p>
+          <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+            {["武汉大学","华中科技大学","武汉理工大学","中南财经政法大学","湖北经济学院","武汉商学院","武汉纺织大学","湖北工业大学","华中师范大学","江汉大学","湖北大学","三峡大学"].map((s) => (
+              <div key={s} className="px-3 py-2 bg-white/15 backdrop-blur rounded-lg hover:bg-white/25 transition cursor-pointer truncate">{s}</div>
+            ))}
+          </div>
+          <button className="mt-5 w-full py-2 bg-white text-blue-600 rounded-lg text-sm font-semibold hover:bg-blue-50 transition">申请成为合作高校</button>
+        </div>
+      </div>
+
+      {/* 报名弹窗 */}
+      {signupOpen && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 grid place-items-center p-4 animate-fade-in-up" onClick={() => setSignupOpen(null)}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            {!submitted ? (
+              <>
+                <div className="bg-gradient-to-r from-orange-500 to-amber-500 p-5 text-white relative">
+                  <button onClick={() => setSignupOpen(null)} className="absolute top-3 right-3 hover:bg-white/20 rounded p-1 transition"><X className="w-4 h-4" /></button>
+                  <div className="text-xs opacity-90">比赛报名</div>
+                  <div className="font-bold mt-1 line-clamp-2 pr-6">{contests.find((c) => c.id === signupOpen)?.title}</div>
+                </div>
+                <form
+                  className="p-5 space-y-3"
+                  onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
+                >
+                  {[
+                    { k: "name", l: "姓名", p: "请输入真实姓名", type: "text" },
+                    { k: "phone", l: "手机号", p: "用于赛事通知与短信验证", type: "tel" },
+                    { k: "school", l: "所在学校", p: "如：武汉大学", type: "text" },
+                    { k: "major", l: "专业 / 年级", p: "如：国际贸易 大三", type: "text" },
+                    { k: "team", l: "战队名称（选填）", p: "个人赛可留空", type: "text" },
+                  ].map((f) => (
+                    <div key={f.k}>
+                      <label className="text-xs text-slate-600 font-medium">{f.l}</label>
+                      <input
+                        required={f.k !== "team"}
+                        type={f.type}
+                        value={form[f.k as keyof typeof form]}
+                        onChange={(e) => setForm({ ...form, [f.k]: e.target.value })}
+                        placeholder={f.p}
+                        className="mt-1 w-full px-3 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition"
+                      />
+                    </div>
+                  ))}
+                  <div>
+                    <label className="text-xs text-slate-600 font-medium">参赛人数</label>
+                    <select
+                      value={form.members}
+                      onChange={(e) => setForm({ ...form, members: e.target.value })}
+                      className="mt-1 w-full px-3 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition cursor-pointer"
+                    >
+                      <option value="1">1 人（个人赛）</option>
+                      <option value="3">3 人（小型团队）</option>
+                      <option value="5">5 人（标准团队）</option>
+                    </select>
+                  </div>
+                  <label className="flex items-center gap-2 text-xs text-slate-500 pt-1">
+                    <input type="checkbox" required className="accent-orange-500" />
+                    我已阅读并同意《赛事报名须知》与《参赛承诺书》
+                  </label>
+                  <button type="submit" className="w-full py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg font-semibold text-sm hover:from-orange-600 hover:to-amber-600 transition shadow-md shadow-orange-500/30">
+                    确认提交报名
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 mx-auto rounded-full bg-emerald-100 grid place-items-center">
+                  <CheckCircle2 className="w-9 h-9 text-emerald-500" />
+                </div>
+                <h4 className="mt-4 text-lg font-bold text-slate-800">报名成功！</h4>
+                <p className="text-sm text-slate-500 mt-2">报名编号 <b className="text-orange-500 font-mono">CBEC-{Date.now().toString().slice(-8)}</b><br />赛事组委会将在 24 小时内通过短信与微信通知您</p>
+                <button onClick={() => setSignupOpen(null)} className="mt-5 px-6 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition font-medium">完成</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function PlaceholderView({ title, desc }: { title: string; desc: string }) {
   return (
     <div className="bg-white rounded-2xl p-16 border border-blue-50 shadow-sm text-center">
