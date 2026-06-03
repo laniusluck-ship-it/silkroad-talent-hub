@@ -418,35 +418,35 @@ function HomeView() {
         </div>
       </div>
 
-      {/* 就业喜报 + 政策资讯 */}
+      {/* 比赛获奖榜 + 政策资讯 */}
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-12 lg:col-span-7 bg-white rounded-2xl p-6 border border-blue-50 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-orange-500" /> 学员就业喜报
+              <Trophy className="w-5 h-5 text-orange-500" /> 大学生比赛获奖喜报
             </h3>
-            <a className="text-xs text-blue-600 hover:text-blue-700 cursor-pointer">更多喜报 →</a>
+            <a className="text-xs text-blue-600 hover:text-blue-700 cursor-pointer">更多榜单 →</a>
           </div>
           <div className="space-y-3">
             {[
-              { n: "张同学", from: "TikTok 直播运营进阶班", to: "斑马网络 · 跨境直播主管", salary: "18K·14薪", c: "from-orange-500 to-red-500" },
-              { n: "李同学", from: "亚马逊 FBA 精品化运营营", to: "安克创新 · 高级运营经理", salary: "22K·13薪", c: "from-blue-500 to-cyan-500" },
-              { n: "王同学", from: "独立站从 0 到 1 实战班", to: "良品铺子海外 · 独立站负责人", salary: "20K·12薪", c: "from-emerald-500 to-teal-500" },
-              { n: "陈同学", from: "RCEP 关务合规精讲班", to: "九州通医药 · 国际事业部", salary: "15K·15薪", c: "from-purple-500 to-pink-500" },
+              { n: "武汉大学 · 丝路战队", from: "第十届\"互联网+\"跨境电商赛", to: "全国一等奖", prize: "¥ 80,000", c: "from-red-500 to-orange-500", rank: "🏆 冠军" },
+              { n: "华中科技大学 · TK 出海队", from: "TikTok Shop 校园直播带货精英赛", to: "全国二等奖", prize: "¥ 50,000", c: "from-pink-500 to-rose-500", rank: "🥈 亚军" },
+              { n: "湖北经济学院 · 跨境精英社", from: "湖北省大学生跨境电商技能大赛", to: "省级特等奖", prize: "¥ 30,000", c: "from-blue-500 to-cyan-500", rank: "🥇 特等" },
+              { n: "武汉商学院 · 出海少年", from: "亚马逊全球开店校园模拟挑战赛", to: "华中赛区一等奖", prize: "¥ 20,000", c: "from-emerald-500 to-teal-500", rank: "🥉 一等" },
             ].map((s) => (
-              <div key={s.n} className="flex items-center gap-4 p-3 bg-gradient-to-r from-blue-50/50 to-transparent rounded-xl hover:from-blue-50 transition group">
-                <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${s.c} grid place-items-center text-white font-semibold flex-shrink-0`}>{s.n.charAt(0)}</div>
+              <div key={s.n} className="flex items-center gap-4 p-3 bg-gradient-to-r from-orange-50/50 to-transparent rounded-xl hover:from-orange-50 transition group">
+                <div className={`w-11 h-11 rounded-full bg-gradient-to-br ${s.c} grid place-items-center text-white font-semibold flex-shrink-0 text-xs`}>{s.rank.slice(0, 2)}</div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm text-slate-800">
-                    <b>{s.n}</b> <span className="text-slate-400">结业于</span> {s.from}
+                    <b>{s.n}</b> <span className="text-slate-400">荣获</span> <span className="text-orange-600 font-medium">{s.to}</span>
                   </div>
                   <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
-                    <ArrowRight className="w-3 h-3 text-blue-500" /> 成功入职 <span className="text-blue-600 font-medium">{s.to}</span>
+                    <Trophy className="w-3 h-3 text-orange-500" /> 赛事：{s.from}
                   </div>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <div className="text-orange-500 font-bold text-sm">{s.salary}</div>
-                  <div className="text-[10px] text-slate-400">offer 已确认</div>
+                  <div className="text-orange-500 font-bold text-sm">{s.prize}</div>
+                  <div className="text-[10px] text-slate-400">奖金已发放</div>
                 </div>
               </div>
             ))}
