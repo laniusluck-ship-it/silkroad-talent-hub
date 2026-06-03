@@ -96,6 +96,7 @@ function Index() {
           {tab === "jobs" && <JobsView />}
           {tab === "news" && <NewsView />}
           {tab === "exam" && <ExamView />}
+          {tab === "contest" && <ContestView />}
           {tab === "about" && <AboutView />}
         </div>
       </main>
