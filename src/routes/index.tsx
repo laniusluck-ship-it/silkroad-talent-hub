@@ -18,12 +18,13 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Tab = "home" | "academy" | "exam" | "jobs" | "news" | "about";
+type Tab = "home" | "academy" | "exam" | "contest" | "jobs" | "news" | "about";
 
 const NAV: { key: Tab; label: string; icon: typeof Home }[] = [
   { key: "home", label: "首页", icon: Home },
   { key: "academy", label: "跨境学院", icon: BookOpen },
   { key: "exam", label: "认证考试", icon: Award },
+  { key: "contest", label: "比赛专区", icon: Trophy },
   { key: "jobs", label: "实习招聘", icon: Briefcase },
   { key: "news", label: "跨境资讯", icon: Newspaper },
   { key: "about", label: "关于", icon: Info },
