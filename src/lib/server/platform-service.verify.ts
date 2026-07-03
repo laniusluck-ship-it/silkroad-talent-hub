@@ -1,5 +1,19 @@
 import { createMockPlatformRepository } from "./platform-data.server.ts";
 import {
+  forbiddenSecretPractices,
+  supabaseDrizzleDependencyPlan,
+  supabaseEnvironmentPlan,
+} from "./db/supabase-drizzle-plan.server.ts";
+import {
+  i18nTranslationTables,
+  schemaDraftBatches,
+  schemaDraftTables,
+} from "./db/schema-draft.server.ts";
+import {
+  repositoryContractInvariants,
+  storageRepositoryContract,
+} from "./db/repository-contract.server.ts";
+import {
   getCurrentUser,
   hasPermission,
   requirePermission,
@@ -291,6 +305,64 @@ assert(
 assert(
   platformSystemPlan.existingModelDrafts.apiRoadmap === apiRoadmap,
   "system plan references existing API roadmap",
+);
+
+assert(
+  supabaseDrizzleDependencyPlan.some(
+    (dependency) => dependency.name === "drizzle-orm" && dependency.kind === "runtime",
+  ),
+  "dependency plan should include drizzle-orm runtime dependency",
+);
+assert(
+  supabaseDrizzleDependencyPlan.some(
+    (dependency) => dependency.name === "drizzle-kit" && dependency.kind === "dev",
+  ),
+  "dependency plan should include drizzle-kit dev dependency",
+);
+assert(
+  supabaseEnvironmentPlan.some(
+    (env) => env.name === "DATABASE_URL" && env.mustStaySecret && env.safety === "server-secret",
+  ),
+  "DATABASE_URL should be server-secret only",
+);
+assert(
+  supabaseEnvironmentPlan.some(
+    (env) =>
+      env.name === "SUPABASE_SERVICE_ROLE_KEY" &&
+      env.mustStaySecret &&
+      env.safety === "server-secret",
+  ),
+  "service role key should be server-secret only",
+);
+assert(
+  forbiddenSecretPractices.every((practice) => !practice.includes("actual-secret-value")),
+  "secret practices should not contain real secrets",
+);
+assert(schemaDraftBatches["auth-rbac"].includes("users"), "auth batch should include users");
+assert(
+  schemaDraftBatches["content-i18n"].includes("course_translations"),
+  "content batch should include course translations",
+);
+assert(
+  schemaDraftBatches["submissions-certificates"].includes("certificate_verification_logs"),
+  "submission batch should include certificate verification logs",
+);
+assert(i18nTranslationTables.includes("job_translations"), "i18n tables should include jobs");
+assert(
+  schemaDraftTables.some((table) => table.name === "role_permissions" && table.unique?.length),
+  "role permissions should declare unique constraints",
+);
+assert(
+  repositoryContractInvariants.some((item) => item.includes("Result envelope")),
+  "repository contract should preserve Result envelope",
+);
+assert(
+  repositoryContractInvariants.some((item) => item.includes("currentUser")),
+  "repository contract should require currentUser for writes",
+);
+assert(
+  storageRepositoryContract.methods.includes("createUploadUrl"),
+  "storage contract should include upload URL boundary",
 );
 
 console.log("platform service verification passed");
