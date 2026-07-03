@@ -5,10 +5,21 @@ import {
   supabaseEnvironmentPlan,
 } from "./db/supabase-drizzle-plan.server.ts";
 import {
+  dbReadLocaleFallbackPlan,
+  dbReadRepositoryPlan,
+  dbWriteCutoverPlan,
+} from "./db/db-read-repository-plan.server.ts";
+import { rlsMigrationRecommendation, rlsPolicyDrafts } from "./db/rls-policy-draft.server.ts";
+import {
   i18nTranslationTables,
   schemaDraftBatches,
   schemaDraftTables,
 } from "./db/schema-draft.server.ts";
+import {
+  permissionSeedPlan,
+  rolePermissionSeedPlan,
+  seedSafetyPlan,
+} from "./db/seed-plan.server.ts";
 import {
   repositoryContractInvariants,
   storageRepositoryContract,
@@ -21,6 +32,10 @@ import {
   requireRole,
   type AuthUser,
 } from "./platform-auth.server.ts";
+import {
+  buildAuthUserFromClaims,
+  mapBusinessUserToAuthUser,
+} from "./auth/supabase-auth-boundary.server.ts";
 import {
   getLocaleFallbacks,
   pickTranslation,
@@ -372,5 +387,135 @@ assert(
   "certificateVerificationLogs" in dbSchema,
   "Drizzle schema should include certificate verification logs table",
 );
+const mappedAuthUser = mapBusinessUserToAuthUser({
+  id: "business-user-001",
+  preferredLocale: "zh-CN",
+  roles: [{ role: "student" }],
+});
+assert(mappedAuthUser.role === "student", "Supabase boundary maps business role");
+assert(
+  mappedAuthUser.permissions?.includes("certificate:verify"),
+  "Supabase boundary expands role permissions",
+);
+assert(
+  buildAuthUserFromClaims({ claims: null, businessUser: null }).status === "anonymous",
+  "Supabase boundary handles missing session",
+);
+assert(
+  buildAuthUserFromClaims({
+    claims: { sub: "business-user-001" },
+    businessUser: null,
+  }).status === "anonymous",
+  "Supabase boundary handles missing business user",
+);
+const subjectMismatch = buildAuthUserFromClaims({
+  claims: { sub: "auth-user-001" },
+  businessUser: { id: "business-user-001", roles: [{ role: "student" }] },
+});
+assert(
+  subjectMismatch.status === "anonymous" && subjectMismatch.reason === "SUBJECT_MISMATCH",
+  "Supabase boundary rejects subject mismatch",
+);
+const noRoleUser = buildAuthUserFromClaims({
+  claims: { sub: "business-user-001" },
+  businessUser: { id: "business-user-001", roles: [] },
+});
+assert(
+  noRoleUser.status === "anonymous" && noRoleUser.reason === "NO_ROLE",
+  "Supabase boundary rejects business users without roles",
+);
+assert(
+  buildAuthUserFromClaims({
+    claims: { sub: "business-user-001" },
+    businessUser: { id: "business-user-001", roles: [{ role: "admin" }] },
+  }).status === "authenticated",
+  "Supabase boundary maps authenticated users",
+);
+assert(
+  buildAuthUserFromClaims({
+    claims: { sub: "business-user-002" },
+    businessUser: { id: "business-user-002", roles: [{ role: "student" }] },
+  }).status === "authenticated",
+  "Supabase boundary maps authenticated student users",
+);
+let noRoleMapThrew = false;
+try {
+  mapBusinessUserToAuthUser({ id: "business-user-no-role", roles: [] });
+} catch {
+  noRoleMapThrew = true;
+}
+assert(noRoleMapThrew, "mapBusinessUserToAuthUser should reject missing roles");
+
+assert(
+  rlsPolicyDrafts.some(
+    (policy) => policy.key === "public-content-read" && policy.actors.includes("anon"),
+  ),
+  "RLS draft covers anon public content read",
+);
+assert(
+  rlsPolicyDrafts.some(
+    (policy) => policy.key === "own-profile-data" && policy.tables.includes("users"),
+  ),
+  "RLS draft covers own profile data",
+);
+assert(
+  rlsPolicyDrafts.some((policy) => policy.key === "owner-submission-processing"),
+  "RLS draft covers owner submission processing",
+);
+assert(
+  rlsPolicyDrafts.some((policy) => policy.key === "admin-full-control"),
+  "RLS draft covers admin control",
+);
+assert(
+  rlsPolicyDrafts.some(
+    (policy) =>
+      policy.key === "certificate-verify-view" &&
+      policy.read.includes("certificate:verify") &&
+      policy.read.includes("certificate:view"),
+  ),
+  "RLS draft covers certificate verify/view split",
+);
+assert(
+  rlsPolicyDrafts.some(
+    (policy) => policy.key === "service-role-restricted" && policy.actors.includes("service_role"),
+  ),
+  "RLS draft documents service role boundary",
+);
+assert(
+  !rlsMigrationRecommendation.shouldGenerateMigrationNow,
+  "RLS migration should not be generated this round",
+);
+
+assert(
+  dbReadRepositoryPlan.getOverview.resultEnvelope === "ServiceResult",
+  "DB read plan preserves Result envelope",
+);
+assert(
+  dbReadRepositoryPlan.searchPlatform.filters?.includes("keyword"),
+  "DB read search plan includes keyword filter",
+);
+assert(
+  dbReadLocaleFallbackPlan.order.join(">") === "requested locale>zh-CN>first available translation",
+  "DB read plan keeps locale fallback order",
+);
+assert(!dbWriteCutoverPlan.cutWritesThisRound, "DB write cutover is disabled this round");
+assert(
+  dbWriteCutoverPlan.remainsMocked.includes("createJobApplication"),
+  "write APIs remain on mock repository",
+);
+
+const seededPermissionSet = new Set(permissionSeedPlan);
+for (const roleSeed of rolePermissionSeedPlan) {
+  for (const permission of rolePermissionDraft[roleSeed.key].permissions) {
+    assert(
+      roleSeed.permissions.includes(permission),
+      `seed plan should include ${roleSeed.key}:${permission}`,
+    );
+    assert(seededPermissionSet.has(permission), `permission seed should include ${permission}`);
+  }
+}
+assert(!seedSafetyPlan.containsRealUsers, "seed plan should not contain real users");
+assert(!seedSafetyPlan.containsPersonalData, "seed plan should not contain personal data");
+assert(seedSafetyPlan.strategy.includes("upsert"), "seed plan should use idempotent upsert");
 
 console.log("platform service verification passed");
