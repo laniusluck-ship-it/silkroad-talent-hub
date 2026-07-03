@@ -13,6 +13,7 @@ import {
   repositoryContractInvariants,
   storageRepositoryContract,
 } from "./db/repository-contract.server.ts";
+import * as dbSchema from "./db/schema.ts";
 import {
   getCurrentUser,
   hasPermission,
@@ -363,6 +364,13 @@ assert(
 assert(
   storageRepositoryContract.methods.includes("createUploadUrl"),
   "storage contract should include upload URL boundary",
+);
+assert("users" in dbSchema, "Drizzle schema should include users table");
+assert("courseTranslations" in dbSchema, "Drizzle schema should include course translations table");
+assert("jobApplications" in dbSchema, "Drizzle schema should include job applications table");
+assert(
+  "certificateVerificationLogs" in dbSchema,
+  "Drizzle schema should include certificate verification logs table",
 );
 
 console.log("platform service verification passed");
