@@ -1,5 +1,17 @@
 import { createMockPlatformRepository } from "./platform-data.server.ts";
 import {
+  getCurrentUser,
+  hasPermission,
+  requirePermission,
+  requireRole,
+  type AuthUser,
+} from "./platform-auth.server.ts";
+import {
+  getLocaleFallbacks,
+  pickTranslation,
+  resolveLocale,
+} from "./platform-localization.server.ts";
+import {
   apiRoadmap,
   databaseTableDrafts,
   defaultLocale,
@@ -8,6 +20,14 @@ import {
   rolePermissionDraft,
   supportedLocales,
 } from "./platform-system-model.server.ts";
+import {
+  mvpDatabaseTables,
+  pendingProductDecisions,
+  platformSystemPlan,
+  recommendedBackendRoute,
+  repositoryMigrationPath,
+  secondWaveDatabaseTables,
+} from "./platform-system-plan.server.ts";
 import {
   createContestRegistration,
   createCourseEnrollment,
@@ -123,10 +143,26 @@ assert(
   "locale fallback should include default locale",
 );
 assert(rolePermissionDraft.guest.permissions.includes("content:browse"), "guest can browse");
+assert(
+  rolePermissionDraft.guest.permissions.includes("certificate:verify"),
+  "guest can verify certificate numbers",
+);
 assert(rolePermissionDraft.student.permissions.includes("course:enroll"), "student can enroll");
+assert(
+  rolePermissionDraft.student.permissions.includes("exam:register"),
+  "student can register exams",
+);
 assert(
   rolePermissionDraft.student.permissions.includes("contest:register"),
   "student can register contests",
+);
+assert(
+  rolePermissionDraft.student.permissions.includes("certificate:view"),
+  "student can view certificates",
+);
+assert(
+  rolePermissionDraft.student.permissions.includes("certificate:verify"),
+  "student can verify certificates",
 );
 assert(
   rolePermissionDraft.enterprise.permissions.includes("job:publish"),
@@ -140,6 +176,11 @@ assert(
   rolePermissionDraft.admin.permissions.includes("certificate:manage"),
   "admin can manage certificates",
 );
+assert(
+  rolePermissionDraft.admin.permissions.includes("certificate:verify"),
+  "admin can verify certificates",
+);
+assert(rolePermissionDraft.admin.permissions.includes("user:review"), "admin can review users");
 assert(
   rolePermissionDraft.admin.permissions.includes("contest:register"),
   "admin can register contests",
@@ -157,6 +198,99 @@ assert(
     (api) => api.name === "auth.login / auth.logout / auth.me" && api.status === "new",
   ),
   "api roadmap should include auth endpoints",
+);
+
+const guestUser: AuthUser = { id: "user-guest-001", role: "guest" };
+const studentUser: AuthUser = { id: "user-student-001", role: "student" };
+const enterpriseUser: AuthUser = { id: "user-enterprise-001", role: "enterprise" };
+const adminUser: AuthUser = { id: "user-admin-001", role: "admin" };
+
+assert(getCurrentUser({ user: studentUser })?.id === studentUser.id, "current user boundary works");
+assert(hasPermission(guestUser, "certificate:verify"), "guest role can verify certificates");
+assert(!hasPermission(guestUser, "certificate:view"), "guest role cannot view certificate details");
+assert(hasPermission(studentUser, "exam:register"), "student has exam registration permission");
+assert(
+  hasPermission(studentUser, "contest:register"),
+  "student has contest registration permission",
+);
+assert(hasPermission(studentUser, "certificate:view"), "student has certificate view permission");
+assert(
+  hasPermission(studentUser, "certificate:verify"),
+  "student has certificate verify permission",
+);
+assert(!hasPermission(null, "contest:register"), "guest without user cannot submit");
+assert(!hasPermission(null, "exam:register"), "guest cannot register exams");
+assert(!hasPermission(null, "certificate:verify"), "null user cannot verify by permission helper");
+assert(!hasPermission(null, "certificate:view"), "guest cannot view certificates");
+assert(!hasPermission(null, "user:review"), "guest cannot review users");
+assert(hasPermission(enterpriseUser, "job:publish"), "enterprise can publish jobs via auth helper");
+assert(hasPermission(enterpriseUser, "certificate:view"), "enterprise can view certificates");
+assert(hasPermission(enterpriseUser, "certificate:verify"), "enterprise can verify certificates");
+assert(
+  hasPermission(adminUser, "certificate:manage"),
+  "admin can manage certificates via auth helper",
+);
+assert(hasPermission(adminUser, "certificate:view"), "admin can view certificates via auth helper");
+assert(
+  hasPermission(adminUser, "certificate:verify"),
+  "admin can verify certificates via auth helper",
+);
+assert(hasPermission(adminUser, "user:review"), "admin can review users via auth helper");
+assert(requireRole(studentUser, ["student"]).success, "requireRole accepts allowed student");
+assert(!requireRole(studentUser, ["admin"]).success, "requireRole rejects wrong role");
+assert(
+  requirePermission(studentUser, "contest:register").success,
+  "requirePermission accepts contest register",
+);
+assert(
+  !requirePermission(studentUser, "job:publish").success,
+  "requirePermission rejects unavailable permission",
+);
+
+assert(resolveLocale("en-US") === "en-US", "supported locale resolves to itself");
+assert(resolveLocale("ru-RU") === defaultLocale, "unsupported locale resolves to default");
+assert(
+  getLocaleFallbacks("en-US", ["zh-CN", "ar-SA"]).join(">") === "en-US>zh-CN>ar-SA",
+  "locale fallbacks use requested, default, first available order",
+);
+
+const pickedEn = pickTranslation(
+  [
+    { locale: "zh-CN", title: "中文标题" },
+    { locale: "en-US", title: "English title" },
+  ],
+  "en-US",
+);
+assert(pickedEn?.translation.title === "English title", "pickTranslation prefers requested locale");
+
+const pickedFallback = pickTranslation([{ locale: "zh-CN", title: "中文标题" }], "en-US");
+assert(pickedFallback?.resolvedLocale === "zh-CN", "pickTranslation falls back to default locale");
+
+const pickedFirstAvailable = pickTranslation([{ locale: "ar-SA", title: "Arabic title" }], "en-US");
+assert(
+  pickedFirstAvailable?.resolvedLocale === "ar-SA",
+  "pickTranslation falls back to first available translation",
+);
+
+assert(recommendedBackendRoute.primary.includes("Supabase"), "plan includes Supabase route");
+assert(recommendedBackendRoute.alternative.includes("Neon"), "plan includes Neon route");
+assert(mvpDatabaseTables.includes("users"), "MVP tables include users");
+assert(mvpDatabaseTables.includes("course_translations"), "MVP tables include course translations");
+assert(
+  secondWaveDatabaseTables.includes("learning_progress"),
+  "second wave includes learning progress",
+);
+assert(
+  repositoryMigrationPath.some((step) => step.includes("Result shape")),
+  "repository migration keeps Result shape stable",
+);
+assert(
+  pendingProductDecisions.some((decision) => decision.key === "authProvider"),
+  "plan calls out auth provider decision",
+);
+assert(
+  platformSystemPlan.existingModelDrafts.apiRoadmap === apiRoadmap,
+  "system plan references existing API roadmap",
 );
 
 console.log("platform service verification passed");

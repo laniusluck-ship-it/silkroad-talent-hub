@@ -8,11 +8,15 @@ export type UserRole = "guest" | "student" | "enterprise" | "teacher" | "admin";
 export type PermissionKey =
   | "content:browse"
   | "course:enroll"
+  | "exam:register"
   | "job:apply"
   | "contest:register"
+  | "certificate:verify"
+  | "certificate:view"
   | "job:publish"
   | "course:manage"
   | "content:review"
+  | "user:review"
   | "submission:process"
   | "certificate:manage";
 
@@ -44,34 +48,58 @@ export const rolePermissionDraft: Record<
 > = {
   guest: {
     label: "游客",
-    permissions: ["content:browse"],
-    notes: "可浏览公开课程、岗位、赛事、认证与资讯；不可报名、投递或管理内容。",
+    permissions: ["content:browse", "certificate:verify"],
+    notes: "可浏览公开课程、岗位、赛事、认证与资讯，可公开核验证书编号；不可报名、投递或管理内容。",
   },
   student: {
     label: "学生",
-    permissions: ["content:browse", "course:enroll", "job:apply", "contest:register"],
-    notes: "可报名课程/赛事、投递岗位、查看自己的证书与提交记录。",
+    permissions: [
+      "content:browse",
+      "course:enroll",
+      "exam:register",
+      "job:apply",
+      "contest:register",
+      "certificate:verify",
+      "certificate:view",
+    ],
+    notes: "可报名课程/赛事、投递岗位，公开核验证书编号，并查看自己的证书与提交记录。",
   },
   enterprise: {
     label: "企业",
-    permissions: ["content:browse", "job:publish", "submission:process"],
-    notes: "可发布岗位、处理本企业岗位投递、查看候选人基础资料。",
+    permissions: [
+      "content:browse",
+      "job:publish",
+      "certificate:verify",
+      "certificate:view",
+      "submission:process",
+    ],
+    notes: "可发布岗位、处理本企业岗位投递、公开核验证书编号，并查看授权候选人资料。",
   },
   teacher: {
     label: "教师/机构",
-    permissions: ["content:browse", "course:manage", "submission:process"],
-    notes: "可维护自己负责的课程、查看课程报名与学习服务记录。",
+    permissions: [
+      "content:browse",
+      "course:manage",
+      "certificate:verify",
+      "certificate:view",
+      "submission:process",
+    ],
+    notes: "可维护自己负责的课程、公开核验证书编号，并查看课程相关报名与证书记录。",
   },
   admin: {
     label: "管理员",
     permissions: [
       "content:browse",
       "course:enroll",
+      "exam:register",
       "job:apply",
       "contest:register",
+      "certificate:verify",
+      "certificate:view",
       "job:publish",
       "course:manage",
       "content:review",
+      "user:review",
       "submission:process",
       "certificate:manage",
     ],
@@ -173,7 +201,7 @@ export const databaseTableDrafts: TableDraft[] = [
     name: "roles / permissions / role_permissions",
     purpose: "后台 RBAC，可从当前 rolePermissionDraft 初始化。",
     keyFields: ["role_id", "permission_key", "scope"],
-    notes: "管理员后台和企业/教师工作台接入前必须落库。",
+    notes: "管理员后台和企业/教师工作台接入前必须落库；用户/企业/机构资质审核使用 user:review。",
   },
   {
     name: "courses / course_translations",
@@ -190,6 +218,8 @@ export const databaseTableDrafts: TableDraft[] = [
     name: "certifications / certification_translations / exam_sessions",
     purpose: "认证项目、考试场次和多语言说明。",
     keyFields: ["certification.id", "code", "exam_session.id", "starts_at", "locale"],
+    notes:
+      "考试报名使用 exam:register；公开证书编号核验使用 certificate:verify；登录/授权查看证书详情使用 certificate:view。",
   },
   {
     name: "contests / contest_translations / contest_stages",
@@ -211,6 +241,8 @@ export const databaseTableDrafts: TableDraft[] = [
     name: "certificates / certificate_verification_logs / awards",
     purpose: "证书签发、核验日志和赛事/课程奖项。",
     keyFields: ["certificate_no", "holder_user_id", "issued_at", "verification_log.id", "award.id"],
+    notes:
+      "certificate:verify 面向公开编号核验并写 verification logs；certificate:view 面向登录用户查看个人/授权/关联证书详情。",
   },
   {
     name: "audit_logs",
