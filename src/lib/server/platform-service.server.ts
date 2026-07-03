@@ -6,7 +6,7 @@ import {
   type Job,
   type NewsItem,
   type PlatformRepository,
-} from "./platform-data.server";
+} from "./platform-data.server.ts";
 
 export type ApiError = {
   code: string;

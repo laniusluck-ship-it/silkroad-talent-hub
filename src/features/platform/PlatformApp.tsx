@@ -961,21 +961,34 @@ function JobDetailView({ jobId, onBack }: { jobId: string; onBack: () => void })
   );
 }
 
-export function PlatformApp({ initialTab, initialPage }: { initialTab: Tab; initialPage: Page }) {
+export function PlatformApp({
+  initialTab,
+  initialPage,
+  initialQuery = "",
+  initialJobId = "",
+}: {
+  initialTab: Tab;
+  initialPage: Page;
+  initialQuery?: string;
+  initialJobId?: string;
+}) {
   const [tab, setTab] = useState<Tab>(initialTab);
   const [page, setPage] = useState<Page>(initialPage);
-  const [searchTerm, setSearchTerm] = useState(() => readPlatformSearch().query);
-  const [activeJobId, setActiveJobId] = useState(() => readPlatformSearch().jobId);
+  const [searchTerm, setSearchTerm] = useState(
+    () => initialQuery.trim() || readPlatformSearch().query,
+  );
+  const [activeJobId, setActiveJobId] = useState(
+    () => initialJobId.trim() || readPlatformSearch().jobId,
+  );
   const [banner, setBanner] = useState(true);
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
-    const next = readPlatformSearch();
     setTab(initialTab);
     setPage(initialPage);
-    setSearchTerm(next.query);
-    setActiveJobId(next.jobId);
-  }, [initialTab, initialPage]);
+    setSearchTerm(initialQuery.trim());
+    setActiveJobId(initialJobId.trim());
+  }, [initialTab, initialPage, initialQuery, initialJobId]);
 
   useEffect(() => {
     const handler = () => {

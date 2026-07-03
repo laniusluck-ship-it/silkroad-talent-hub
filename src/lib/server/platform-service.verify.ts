@@ -1,4 +1,13 @@
-import { createMockPlatformRepository } from "./platform-data.server";
+import { createMockPlatformRepository } from "./platform-data.server.ts";
+import {
+  apiRoadmap,
+  databaseTableDrafts,
+  defaultLocale,
+  entityCoverageMatrix,
+  localizationDraft,
+  rolePermissionDraft,
+  supportedLocales,
+} from "./platform-system-model.server.ts";
 import {
   createContestRegistration,
   createCourseEnrollment,
@@ -6,7 +15,7 @@ import {
   searchPlatform,
   verifyCertificate,
   type ServiceResult,
-} from "./platform-service.server";
+} from "./platform-service.server.ts";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -105,6 +114,49 @@ assert(duplicateEnrollment.data.duplicate, "duplicate enrollment should be marke
 assert(
   duplicateEnrollment.data.record.id === firstEnrollment.data.record.id,
   "duplicate enrollment should return original record",
+);
+
+assert(defaultLocale === "zh-CN", "default locale should be zh-CN");
+assert(supportedLocales.includes("en-US"), "en-US should be reserved as second locale");
+assert(
+  localizationDraft.fallbackOrder.includes(defaultLocale),
+  "locale fallback should include default locale",
+);
+assert(rolePermissionDraft.guest.permissions.includes("content:browse"), "guest can browse");
+assert(rolePermissionDraft.student.permissions.includes("course:enroll"), "student can enroll");
+assert(
+  rolePermissionDraft.student.permissions.includes("contest:register"),
+  "student can register contests",
+);
+assert(
+  rolePermissionDraft.enterprise.permissions.includes("job:publish"),
+  "enterprise can publish jobs",
+);
+assert(
+  rolePermissionDraft.teacher.permissions.includes("course:manage"),
+  "teacher can manage courses",
+);
+assert(
+  rolePermissionDraft.admin.permissions.includes("certificate:manage"),
+  "admin can manage certificates",
+);
+assert(
+  rolePermissionDraft.admin.permissions.includes("contest:register"),
+  "admin can register contests",
+);
+assert(
+  entityCoverageMatrix.some((item) => item.entity.includes("User") && item.status === "missing"),
+  "coverage matrix should expose user model gap",
+);
+assert(
+  databaseTableDrafts.some((table) => table.name.includes("course_translations")),
+  "database draft should include course translations",
+);
+assert(
+  apiRoadmap.some(
+    (api) => api.name === "auth.login / auth.logout / auth.me" && api.status === "new",
+  ),
+  "api roadmap should include auth endpoints",
 );
 
 console.log("platform service verification passed");

@@ -6,6 +6,8 @@ export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>) => ({
     tab: typeof search.tab === "string" ? search.tab : undefined,
     page: typeof search.page === "string" ? search.page : undefined,
+    q: typeof search.q === "string" ? search.q : undefined,
+    job: typeof search.job === "string" ? search.job : undefined,
   }),
   head: () => ({
     meta: [
@@ -17,9 +19,18 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const search = Route.useSearch() as { tab?: string; page?: string };
+  const search = Route.useSearch() as { tab?: string; page?: string; q?: string; job?: string };
   const initialTab = TABS.includes(search.tab as Tab) ? (search.tab as Tab) : "home";
   const initialPage = PAGES.includes(search.page as Page) ? (search.page as Page) : "index";
+  const initialQuery = typeof search.q === "string" ? search.q : "";
+  const initialJobId = typeof search.job === "string" ? search.job : "";
 
-  return <PlatformApp initialTab={initialTab} initialPage={initialPage} />;
+  return (
+    <PlatformApp
+      initialTab={initialTab}
+      initialPage={initialPage}
+      initialQuery={initialQuery}
+      initialJobId={initialJobId}
+    />
+  );
 }
