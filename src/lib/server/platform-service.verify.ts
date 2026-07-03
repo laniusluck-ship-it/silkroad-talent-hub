@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { createMockPlatformRepository } from "./platform-data.server.ts";
 import {
   forbiddenSecretPractices,
@@ -89,6 +91,19 @@ function assertFailure<T>(
     `${message}: expected ${code}`,
   );
 }
+
+function readMigration(relativePath: string): string {
+  return readFileSync(new URL(relativePath, import.meta.url), "utf8");
+}
+
+function assertSqlMatches(sql: string, pattern: RegExp, message: string) {
+  assert(pattern.test(sql), message);
+}
+
+const rlsMigrationSql = readMigration("../../../supabase/migrations/0001_rls_policies.sql");
+const seedMigrationSql = readMigration(
+  "../../../supabase/migrations/0002_seed_roles_permissions.sql",
+);
 
 const repository = createMockPlatformRepository();
 const options = { repository };
@@ -517,5 +532,157 @@ for (const roleSeed of rolePermissionSeedPlan) {
 assert(!seedSafetyPlan.containsRealUsers, "seed plan should not contain real users");
 assert(!seedSafetyPlan.containsPersonalData, "seed plan should not contain personal data");
 assert(seedSafetyPlan.strategy.includes("upsert"), "seed plan should use idempotent upsert");
+
+const rlsProtectedTables = [
+  "audit_logs",
+  "certificate_verification_logs",
+  "certificates",
+  "certification_translations",
+  "certifications",
+  "contest_registrations",
+  "contest_translations",
+  "contests",
+  "course_translations",
+  "courses",
+  "enrollments",
+  "enterprise_profiles",
+  "exam_sessions",
+  "job_applications",
+  "job_translations",
+  "jobs",
+  "news",
+  "news_translations",
+  "permissions",
+  "role_permissions",
+  "roles",
+  "student_profiles",
+  "teacher_profiles",
+  "user_roles",
+  "users",
+];
+assert(rlsMigrationSql.length > 0, "0001 RLS migration should exist");
+assert(seedMigrationSql.length > 0, "0002 RBAC seed migration should exist");
+assert(rlsProtectedTables.length === 25, "RLS static check should cover 25 public tables");
+for (const table of rlsProtectedTables) {
+  assert(
+    rlsMigrationSql.includes(`alter table public.${table} enable row level security;`),
+    `RLS migration should enable row level security for ${table}`,
+  );
+}
+
+for (const helper of [
+  "public.current_user_role_keys()",
+  "public.has_permission(required_permission text)",
+  "public.is_admin()",
+]) {
+  assert(
+    rlsMigrationSql.includes(`create or replace function ${helper}`),
+    `RLS migration should create ${helper}`,
+  );
+}
+assert(
+  (rlsMigrationSql.match(/set search_path = public/g) ?? []).length >= 4,
+  "security definer helpers should fix search_path to public",
+);
+assert(
+  rlsMigrationSql.includes("create or replace function public.verify_certificate_public"),
+  "RLS migration should include limited certificate verification function",
+);
+assert(
+  rlsMigrationSql.includes(
+    "revoke all on function public.verify_certificate_public(text) from public;",
+  ),
+  "certificate verification function should be revoked from public by default",
+);
+assert(
+  !/grant execute on function public\.verify_certificate_public\(text\) to anon/i.test(
+    rlsMigrationSql,
+  ),
+  "certificate verification function should not be directly granted to anon",
+);
+assert(
+  !/create policy "[^"]+"\s+on public\.certificates\s+for select\s+to anon/i.test(rlsMigrationSql),
+  "anon should not get direct certificates select policy",
+);
+assertSqlMatches(
+  rlsMigrationSql,
+  /create policy "certificates_select_holder"[\s\S]+certificate:view/i,
+  "certificate detail policy should use certificate:view",
+);
+assertSqlMatches(
+  rlsMigrationSql,
+  /create policy "certificate_verification_logs_insert_authenticated"[\s\S]+certificate:verify/i,
+  "verification log insert should use certificate:verify",
+);
+
+for (const table of ["courses", "jobs", "certifications", "contests", "news"]) {
+  assertSqlMatches(
+    rlsMigrationSql,
+    new RegExp(`create policy "${table}_select_published"[\\s\\S]+to anon, authenticated`, "i"),
+    `${table} should have published public read policy`,
+  );
+}
+for (const table of ["enrollments", "job_applications", "contest_registrations"]) {
+  assertSqlMatches(
+    rlsMigrationSql,
+    new RegExp(
+      `create policy "${table}_insert_own"[\\s\\S]+on public\\.${table}[\\s\\S]+with check \\([\\s\\S]*user_id = auth\\.uid\\(\\)`,
+      "i",
+    ),
+    `${table} insert should require user_id = auth.uid()`,
+  );
+}
+assert(
+  rlsMigrationSql.includes('create policy "contest_registrations_admin_all"'),
+  "contest registrations should stay admin-processed until contests gain owner field",
+);
+assert(
+  rlsMigrationSql.includes("The Supabase service_role bypasses RLS"),
+  "RLS migration should document service_role boundary",
+);
+
+const forbiddenSqlNeedles = [
+  "SUPABASE_SERVICE_ROLE_KEY",
+  "DATABASE_URL=",
+  "postgresql://",
+  "postgres://",
+  "sbp_",
+  "sb_secret_",
+];
+for (const sql of [rlsMigrationSql, seedMigrationSql]) {
+  for (const forbidden of forbiddenSqlNeedles) {
+    assert(!sql.includes(forbidden), `SQL migration should not contain ${forbidden}`);
+  }
+}
+
+const seededPermissions = new Set(
+  Object.values(rolePermissionDraft).flatMap((role) => role.permissions),
+);
+for (const permission of seededPermissions) {
+  assert(
+    seedMigrationSql.includes(`('${permission}',`),
+    `permission seed should include ${permission}`,
+  );
+}
+for (const [roleKey, roleDraft] of Object.entries(rolePermissionDraft)) {
+  for (const permission of roleDraft.permissions) {
+    assert(
+      seedMigrationSql.includes(`('${roleKey}', '${permission}')`),
+      `role permission seed should include ${roleKey}:${permission}`,
+    );
+  }
+}
+assert(
+  seedMigrationSql.includes("delete from public.role_permissions"),
+  "role permission seed should prune stale managed role links",
+);
+assert(
+  !/\binsert into public\.users\b/i.test(seedMigrationSql),
+  "RBAC seed should not insert real users",
+);
+assert(
+  !/\binsert into public\.user_roles\b/i.test(seedMigrationSql),
+  "RBAC seed should not assign real user roles",
+);
 
 console.log("platform service verification passed");
